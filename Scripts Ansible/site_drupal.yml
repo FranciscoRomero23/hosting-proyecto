@@ -1,0 +1,3 @@
+- include: playbooks/common.yaml
+- include: playbooks/hosting_drupal.yaml
+- include: playbooks/install_drupal.yaml

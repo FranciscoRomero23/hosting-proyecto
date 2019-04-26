@@ -1,0 +1,50 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Creación de la base de datos
+    mysql_db: name=drupaldb state=present collation=utf8_general_ci
+  - name: Creación del usuario de la base de datos
+    mysql_user: name=drupaluser password=drupal priv="drupaldb.*:ALL" host=127.0.0.1
+  - name: Descarga de drupal
+    get_url:
+      url: https://ftp.drupal.org/files/projects/drupal-8.6.7.zip
+      dest: /tmp/drupal.zip
+  - name: Descomprimimos los ficheros
+    unarchive:
+      src: /tmp/drupal.zip
+      dest: /tmp
+  - name: Copiamos los ficheros
+    synchronize:
+      src: /tmp/drupal-8.6.7
+      dest: /var/www/html/fjdrupal
+      recursive: True
+  - name: Habilitamos el modulo rewrite
+    command: a2enmod rewrite
+  - name: Copiar el virtualhost con las reglas para el modulo rewrite
+    copy: >
+      src=files/apache2/drupal_rewrite.conf
+      dest=/etc/apache2/sites-available/drupal.conf
+  - name: Descarga de drush
+    get_url:
+      url: https://github.com/drush-ops/drush/releases/download/8.1.17/drush.phar
+      dest: /usr/local/bin/drush
+      mode: 0755
+  - name: Instalación con drush
+    command: >
+      drush si standard -y
+      --site-name="Drupal con Ansible"
+      --account-name="drupaluser"
+      --account-pass="drupal"
+      --db-url=mysql://drupaluser:drupal@127.0.0.1/drupaldb
+      -r /var/www/html/fjdrupal -y
+  - name: Deshabilitamos la agregacion de los css
+    command: drush config-set system.performance css.preprocess 0 -r /var/www/html/drupal-8.6.7 -y
+  - name: Deshabilitamos la agregacion de los js
+    command: drush config-set system.performance js.preprocess 0 -r /var/www/html/drupal-8.6.7 -y
+    notify:
+      - restart apache
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted

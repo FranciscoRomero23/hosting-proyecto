@@ -1,0 +1,22 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Actualizar lista de paquetes
+    apt: update_cache=yes
+  - name: Instalar paquetes necesarios
+    apt: pkg={{ item }}
+    with_items:
+      - apache2
+      - php7.0
+      - mariadb-server
+      - mariadb-client
+      - python-mysqldb
+      - unzip
+      - apache2-utils
+      - php7.0-dom
+      - php7.0-gd
+      - php7.0-xml
+      - php7.0-mbstring
+      - php-mysql
+      - sendmail
