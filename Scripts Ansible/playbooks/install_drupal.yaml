@@ -16,7 +16,7 @@
       dest: /tmp
   - name: Copiamos los ficheros
     synchronize:
-      src: /tmp/drupal-8.6.7
+      src: /tmp/drupal-8.6.7/
       dest: /var/www/html/fjdrupal
       recursive: True
   - name: Habilitamos el modulo rewrite
@@ -39,9 +39,9 @@
       --db-url=mysql://drupaluser:drupal@127.0.0.1/drupaldb
       -r /var/www/html/fjdrupal -y
   - name: Deshabilitamos la agregacion de los css
-    command: drush config-set system.performance css.preprocess 0 -r /var/www/html/drupal-8.6.7 -y
+    command: drush config-set system.performance css.preprocess 0 -r /var/www/html/fjdrupal -y
   - name: Deshabilitamos la agregacion de los js
-    command: drush config-set system.performance js.preprocess 0 -r /var/www/html/drupal-8.6.7 -y
+    command: drush config-set system.performance js.preprocess 0 -r /var/www/html/fjdrupal -y
     notify:
       - restart apache
 
