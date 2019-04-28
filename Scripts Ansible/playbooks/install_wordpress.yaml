@@ -1,0 +1,14 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Creación de la base de datos
+    mysql_db: name=wordpressdb state=present collation=utf8_general_ci
+  - name: Creación del usuario de la base de datos
+    mysql_user: name=wordpressuser password=wordpress priv="wordpressdb.*:ALL" host=127.0.0.1
+    notify:
+      - restart apache
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted

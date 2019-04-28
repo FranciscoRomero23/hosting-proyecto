@@ -1,0 +1,14 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Creación de la base de datos
+    mysql_db: name=prestashopdb state=present collation=utf8_general_ci
+  - name: Creación del usuario de la base de datos
+    mysql_user: name=prestashopuser password=prestashop priv="prestashopdb.*:ALL" host=127.0.0.1
+    notify:
+      - restart apache
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
