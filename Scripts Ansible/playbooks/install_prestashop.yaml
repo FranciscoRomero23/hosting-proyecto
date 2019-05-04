@@ -20,9 +20,14 @@
       dest: /var/www/html/fjprestashop
       owner: www-data
       group: www-data
-  - name: Instalacion con script php:
-    command: php index_cli.php 
-
+  - name: Instalacion con script php
+    command: php /var/www/html/fjprestashop/install/index_cli.php --domain=www.fjprestashop.com --db_server=127.0.0.1 --db_name=prestashopdb --db_user=prestashopuser --db_password=prestashop --theme=classic --language=es --email=prueba@prestashop.com --first-name=test --second-name=test
+  - name: Cambiamos permisos prestashop
+    file:
+      dest: /var/www/html/fjprestashop
+      owner: www-data
+      group: www-data
+      recurse: yes
     notify:
       - restart apache
 
