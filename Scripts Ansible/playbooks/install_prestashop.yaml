@@ -6,6 +6,23 @@
     mysql_db: name=prestashopdb state=present collation=utf8_general_ci
   - name: Creación del usuario de la base de datos
     mysql_user: name=prestashopuser password=prestashop priv="prestashopdb.*:ALL" host=127.0.0.1
+  - name: Descarga de prestashop
+    get_url:
+      url: https://download.prestashop.com/download/releases/prestashop_1.7.4.2.zip
+      dest: /tmp
+  - name: Descomprimimos los ficheros
+    unarchive:
+      src: /tmp/prestashop_1.7.4.2.zip
+      dest: /tmp
+  - name: Descomprimimos los ficheros
+    unarchive:
+      src: /tmp/prestashop.zip
+      dest: /var/www/html/fjprestashop
+      owner: www-data
+      group: www-data
+  - name: Instalacion con script php:
+    command: php index_cli.php 
+
     notify:
       - restart apache
 
