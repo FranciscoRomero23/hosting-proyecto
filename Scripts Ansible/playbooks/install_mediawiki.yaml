@@ -27,6 +27,10 @@
       owner: www-data
       group: www-data
       recurse: yes
+  - name: Borramos el index.html de mediawiki
+    file:
+      path: /var/www/html/fjmediawiki/index.html
+      state: absent
     notify:
       - restart apache
 

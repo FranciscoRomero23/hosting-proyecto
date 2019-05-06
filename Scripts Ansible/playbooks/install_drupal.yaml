@@ -42,6 +42,10 @@
     command: drush config-set system.performance css.preprocess 0 -r /var/www/html/fjdrupal -y
   - name: Deshabilitamos la agregacion de los js
     command: drush config-set system.performance js.preprocess 0 -r /var/www/html/fjdrupal -y
+  - name: Borramos el index.html de drupal
+    file:
+      path: /var/www/html/fjdrupal/index.html
+      state: absent
     notify:
       - restart apache
 

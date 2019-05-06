@@ -28,6 +28,10 @@
       owner: www-data
       group: www-data
       recurse: yes
+  - name: Borramos el index.html de prestashop
+    file:
+      path: /var/www/html/fjprestashop/index.html
+      state: absent
     notify:
       - restart apache
 
