@@ -1,3 +1,0 @@
-- include: playbooks/common.yaml
-- include: playbooks/hosting_wordpress.yaml
-- include: playbooks/install_wordpress.yaml

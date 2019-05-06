@@ -4,23 +4,23 @@
   tasks:
   - name: Crear directorio root
     file:
-      path: /var/www/html/fjwordpress
+      path: /var/www/html/fjmediawiki
       state: directory
       owner: www-data
       group: www-data
       mode: 0775
   - name: Copiar el index.html
     copy: >
-      src=files/apache2/index_wordpress.html
-      dest=/var/www/html/fjwordpress/index.html
+      src=files/apache2/index_mediawiki.html
+      dest=/var/www/html/fjmediawiki/index.html
   - name: Copiar el virtualhost
     copy: >
-      src=files/apache2/wordpress.conf
-      dest=/etc/apache2/sites-available/wordpress.conf
+      src=files/apache2/mediawiki.conf
+      dest=/etc/apache2/sites-available/mediawiki.conf
   - name: Deshabilitamos el virtualhost por defecto
     command: a2dissite 000-default.conf
   - name: Habilitamos el virtualhost nuevo
-    command: a2ensite wordpress.conf
+    command: a2ensite mediawiki.conf
     notify:
       - restart apache
 

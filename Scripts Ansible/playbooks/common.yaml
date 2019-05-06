@@ -25,4 +25,6 @@
       - php7.0-mcrypt
       - php7.0-xml
       - php7.0-cli
+      - php7.0-apcu
+      - php7.0-intl
       - sendmail
