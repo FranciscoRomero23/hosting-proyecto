@@ -1,0 +1,21 @@
+---
+- name: Crear directorio root
+  file:
+    path: /var/www/html/fjmediawiki
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+- name: Copiar el index.html
+  copy: >
+    src=index_mediawiki.html
+    dest=/var/www/html/fjmediawiki/index.html
+- name: Copiar el virtualhost
+  copy: >
+    src=mediawiki.conf
+    dest=/etc/apache2/sites-available/mediawiki.conf
+- name: Deshabilitamos el virtualhost por defecto   
+  command: a2dissite 000-default.conf
+- name: Habilitamos el virtualhost nuevo
+  command: a2ensite mediawiki.conf
+  notify: restart apache

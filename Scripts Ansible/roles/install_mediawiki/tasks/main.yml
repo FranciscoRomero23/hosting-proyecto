@@ -1,0 +1,31 @@
+---
+- name: Creación de la base de datos
+  mysql_db: name=mediawikidb state=present collation=utf8_general_ci
+- name: Creación del usuario de la base de datos
+  mysql_user: name=mediawikiuser password=mediawiki priv="mediawikidb.*:ALL" host=127.0.0.1
+- name: Descarga de mediawiki
+  get_url:
+    url: https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.1.tar.gz
+    dest: /tmp
+- name: Descomprimimos los ficheros
+  unarchive:
+    src: /tmp/mediawiki-1.32.1.tar.gz
+    dest: /tmp
+- name: Copiamos los ficheros
+  synchronize:
+    src: /tmp/mediawiki-1.32.1/
+    dest: /var/www/html/fjmediawiki
+    recursive: True
+- name: Instalacion con script php
+  command: php /var/www/html/fjmediawiki/maintenance/install.php --dbname=mediawikidb --dbserver=127.0.0.1 --installdbuser=mediawikiuser --installdbpass=mediawiki --dbuser=mediawikiuser --dbpass=mediawiki --dbprefix="md_" --server="http://www.fjmediawiki.com" --lang=es --scriptpath="" --pass=prueba "La Wiki de Pruebas" "Francisco Romero"
+- name: Cambiamos permisos mediawiki
+  file:
+    dest: /var/www/html/fjmediawiki
+    owner: www-data
+    group: www-data
+    recurse: yes
+- name: Borramos el index.html de mediawiki
+  file:
+    path: /var/www/html/fjmediawiki/index.html
+    state: absent
+  notify: restart apache

@@ -1,0 +1,21 @@
+---
+- name: Crear directorio root
+  file:
+    path: /var/www/html/fjdrupal
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+- name: Copiar el index.html
+  copy: >
+    src=index_drupal.html
+    dest=/var/www/html/fjdrupal/index.html
+- name: Copiar el virtualhost
+  copy: >
+    src=drupal.conf
+    dest=/etc/apache2/sites-available/drupal.conf
+- name: Deshabilitamos el virtualhost por defecto   
+  command: a2dissite 000-default.conf
+- name: Habilitamos el virtualhost nuevo
+  command: a2ensite drupal.conf
+  notify: restart apache
