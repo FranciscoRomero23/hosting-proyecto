@@ -1,8 +1,8 @@
 ---
 - name: Creación de la base de datos
-  mysql_db: name=mediawikidb state=present collation=utf8_general_ci
+  mysql_db: name={{ mysql_db }} state=present collation=utf8_general_ci
 - name: Creación del usuario de la base de datos
-  mysql_user: name=mediawikiuser password=mediawiki priv="mediawikidb.*:ALL" host=127.0.0.1
+  mysql_user: name={{ mysql_user }} password={{ mysql_password }} priv="{{ mysql_db }}.*:ALL" host=127.0.0.1
 - name: Descarga de mediawiki
   get_url:
     url: https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.1.tar.gz
@@ -14,18 +14,30 @@
 - name: Copiamos los ficheros
   synchronize:
     src: /tmp/mediawiki-1.32.1/
-    dest: /var/www/html/fjmediawiki
+    dest: /var/www/html/{{ domain }}
     recursive: True
 - name: Instalacion con script php
-  command: php /var/www/html/fjmediawiki/maintenance/install.php --dbname=mediawikidb --dbserver=127.0.0.1 --installdbuser=mediawikiuser --installdbpass=mediawiki --dbuser=mediawikiuser --dbpass=mediawiki --dbprefix="md_" --server="http://www.fjmediawiki.com" --lang=es --scriptpath="" --pass=prueba "La Wiki de Pruebas" "Francisco Romero"
+  command: >
+    php /var/www/html/{{ domain }}/maintenance/install.php 
+    --dbname={{ mysql_db }} 
+    --dbserver=127.0.0.1 
+    --installdbuser={{ mysql_user }} 
+    --installdbpass={{ mysql_password }} 
+    --dbuser={{ mysql_user }} 
+    --dbpass={{ mysql_password }} 
+    --dbprefix="md_" 
+    --server="http://www.{{ domain }}.com" 
+    --lang=es 
+    --scriptpath="" 
+    --pass={{ admin_password }} "{{ site_name }}" "{{ admin_user }}"
 - name: Cambiamos permisos mediawiki
   file:
-    dest: /var/www/html/fjmediawiki
+    dest: /var/www/html/{{ domain }}
     owner: www-data
     group: www-data
     recurse: yes
 - name: Borramos el index.html de mediawiki
   file:
-    path: /var/www/html/fjmediawiki/index.html
+    path: /var/www/html/{{ domain }}/index.html
     state: absent
   notify: restart apache

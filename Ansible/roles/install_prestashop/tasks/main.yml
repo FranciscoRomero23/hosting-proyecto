@@ -1,8 +1,8 @@
 ---
 - name: Creación de la base de datos
-  mysql_db: name=prestashopdb state=present collation=utf8_general_ci
+  mysql_db: name={{ mysql_db }} state=present collation=utf8_general_ci
 - name: Creación del usuario de la base de datos
-  mysql_user: name=prestashopuser password=prestashop priv="prestashopdb.*:ALL" host=127.0.0.1
+  mysql_user: name={{ mysql_user }} password={{ mysql_password }} priv="{{ mysql_db }}.*:ALL" host=127.0.0.1
 - name: Descarga de prestashop
   get_url:
     url: https://download.prestashop.com/download/releases/prestashop_1.7.4.2.zip
@@ -14,19 +14,29 @@
 - name: Descomprimimos los ficheros
   unarchive:
     src: /tmp/prestashop.zip
-    dest: /var/www/html/fjprestashop
+    dest: /var/www/html/{{ domain }}
     owner: www-data
     group: www-data
 - name: Instalacion con script php
-  command: php /var/www/html/fjprestashop/install/index_cli.php --domain=www.fjprestashop.com --db_server=127.0.0.1 --db_name=prestashopdb --db_user=prestashopuser --db_password=prestashop --theme=classic --language=es --email=prueba@prestashop.com --first-name=test --second-name=test
+  command: >
+    php /var/www/html/{{ domain }}/install/index_cli.php 
+    --domain=www.{{ domain }}.com 
+    --db_server=127.0.0.1 
+    --db_name={{ mysql_db }} 
+    --db_user={{ mysql_user }} 
+    --db_password={{ mysql_password }} 
+    --theme=classic 
+    --language=es 
+    --email={{ admin_user }}@{{ domain }}.com 
+    --first-name={{ admin_user }} --second-name={{ admin_user }}
 - name: Cambiamos permisos prestashop
   file:
-    dest: /var/www/html/fjprestashop
+    dest: /var/www/html/{{ domain }}
     owner: www-data
     group: www-data
     recurse: yes
 - name: Borramos el index.html de prestashop
   file:
-    path: /var/www/html/fjprestashop/index.html
+    path: /var/www/html/{{ domain }}/index.html
     state: absent
   notify: restart apache
