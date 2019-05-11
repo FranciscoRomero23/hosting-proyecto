@@ -1,0 +1,21 @@
+---
+- name: Crear directorio root
+  file:
+    path: /var/www/html/fjprestashop
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+- name: Copiar el index.html
+  copy: >
+    src=index_prestashop.html
+    dest=/var/www/html/fjprestashop/index.html
+- name: Copiar el virtualhost
+  copy: >
+    src=prestashop.conf
+    dest=/etc/apache2/sites-available/prestashop.conf
+- name: Deshabilitamos el virtualhost por defecto   
+  command: a2dissite 000-default.conf
+- name: Habilitamos el virtualhost nuevo
+  command: a2ensite prestashop.conf
+  notify: restart apache

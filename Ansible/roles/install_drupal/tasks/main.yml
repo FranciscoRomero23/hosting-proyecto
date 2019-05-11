@@ -1,0 +1,46 @@
+---
+- name: Creación de la base de datos
+  mysql_db: name={{ mysql_db }} state=present collation=utf8_general_ci
+- name: Creación del usuario de la base de datos
+  mysql_user: name={{ mysql_user }} password={{ mysql_password }} priv="{{ mysql_db }}.*:ALL" host=127.0.0.1
+- name: Descarga de Drupal
+  get_url:
+    url: https://ftp.drupal.org/files/projects/drupal-8.6.7.zip
+    dest: /tmp/drupal.zip
+- name: Descomprimimos los ficheros
+  unarchive:
+    src: /tmp/drupal.zip
+    dest: /tmp
+- name: Copiamos los ficheros
+  synchronize:
+    src: /tmp/drupal-8.6.7/
+    dest: /var/www/html/{{ domain }}
+    recursive: True
+- name: Habilitamos el modulo rewrite
+  command: a2enmod rewrite
+- name: Copiar el virtualhost con las reglas para el modulo rewrite
+  template: >
+    src=rewrite.conf
+    dest=/etc/apache2/sites-available/{{ domain }}.conf
+- name: Descarga de drush
+  get_url:
+    url: https://github.com/drush-ops/drush/releases/download/8.1.17/drush.phar
+    dest: /usr/local/bin/drush
+    mode: 0755
+- name: Instalación con drush
+  command: >
+    drush si standard -y
+    --site-name="{{ site_name }}"
+    --account-name="{{ mysql_user }}"
+    --account-pass="{{ mysql_password }}"
+    --db-url=mysql://{{ mysql_user }}:{{ mysql_password }}@127.0.0.1/{{ mysql_db }}
+    -r /var/www/html/{{ domain }} -y
+- name: Deshabilitamos la agregacion de los css
+  command: drush config-set system.performance css.preprocess 0 -r /var/www/html/{{ domain }} -y
+- name: Deshabilitamos la agregacion de los js
+  command: drush config-set system.performance js.preprocess 0 -r /var/www/html/{{ domain }} -y
+- name: Borramos el index.html de {{ domain }}
+  file:
+    path: /var/www/html/{{ domain }}/index.html
+    state: absent
+  notify: restart apache

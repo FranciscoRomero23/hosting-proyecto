@@ -1,0 +1,17 @@
+---
+# Variables comunes
+
+domain: miprimeraweb
+
+mysql_db: miprimeraweb
+mysql_user: primerawb_user
+mysql_password: primeraweb
+
+
+# Variables para Drupal
+
+site_name: "Mi primera pagina web"
+
+# Variables para Prestashop
+# Variables para Mediawiki
+
