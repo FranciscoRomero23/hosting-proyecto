@@ -1,0 +1,195 @@
+@font-face {
+  font-family: "Ampera";
+  src: url("Ampera.ttf");
+}
+
+html {
+        background: url("images/fondo.jpg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+
+div.container {
+    border: 0px solid;
+}
+
+header {
+    padding: 0em;
+    color: white;
+    clear: left;
+    text-align: left;
+    text-shadow: 5px 5px 2px #5482C4;
+    height:180px;
+    color: black;
+    font: 40px Ampera;
+    letter-spacing: -1px;
+    border: black 3px solid;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    background: rgba(41,57,80,1);
+}
+
+footer {
+    padding-top: 20px;
+    color: white;
+    clear: left;
+    text-align: center;
+    height:40px;
+    color: black;
+    font: 20px Ampera;
+    letter-spacing: -1px;
+    margin-top: 10px;
+    border: black 3px solid;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: rgba(41,57,80,1);
+}
+
+a:link   
+{   
+ text-decoration:none;   
+}  
+
+nav{
+            height: auto; /*Junto a overflow: hidden; aplicará a nuestro elemento nav el mismo alto que el más alto de sus elementos hijos */ 
+            margin: 0 auto; /* Centro el contenedor */
+      #      overflow: hidden;
+            text-align: center;
+            width: auto; /* Defino el ancho de mi página */
+}
+
+nav p{
+            height: auto; /*Junto a overflow: hidden; aplicará a nuestro elemento nav el mismo alto que el más alto de sus elementos hijos */ 
+            margin: 0 auto; /* Centro el contenedor */
+            overflow: hidden;
+            text-align: center;
+            width: auto; /* Defino el ancho de mi página */
+            font: 30px;
+}
+
+nav input{
+            height: auto; /*Junto a overflow: hidden; aplicará a nuestro elemento nav el mismo alto que el más alto de sus elementos hijos */ 
+            margin: 0 auto; /* Centro el contenedor */
+            overflow: hidden;
+            text-align: center;
+            width: auto; /* Defino el ancho de mi página */
+            font: 30px Ampera;
+}
+
+.valoracion_boton{
+            height: auto; /*Junto a overflow: hidden; aplicará a nuestro elemento nav el mismo alto que el más alto de sus elementos hijos */ 
+            margin: 0 auto; /* Centro el contenedor */
+            overflow: hidden;
+            text-align: center;
+            width: auto; /* Defino el ancho de mi página */
+            font: 30px Ampera;
+}
+
+ul{
+            float: left;
+            list-style-type: none; /* Elimino los estilos de lista */
+            padding: 0; 
+}
+
+li{
+            float: left; /* Floto los li para que se dispongan horizontalmente */
+}
+
+li a{
+            padding: 10px; /* El padding añadirá separación entre los elementos */
+}
+
+article {
+    margin-left: 200px;
+    margin-right: 200px;
+    border-left: 0px solid black;
+    padding: 3em;
+    overflow: hidden;
+    text-align: justify;
+    border: black 3px solid;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: rgba(41,57,80,1);
+}
+
+article h1 {
+    color: black;
+    font: 35px Ampera;
+    letter-spacing: -1px;
+    text-align: left;
+    text-shadow: 5px 5px 2px #5482C4;
+    text-decoration: underline;
+}
+
+article h2 {
+    color: black;
+    font: 30px Ampera;
+    letter-spacing: -1px;
+    text-align: justify;
+}
+
+article p {
+    color: black;
+    font: 25px times;
+    letter-spacing: -1px;
+    text-align: justify;
+}
+
+.boton_personalizado{
+   text-decoration: none;
+   padding: 10px;
+   font-weight: 50px;
+   background-color: #5482C4;
+   border-radius: 2px;
+   margin-left: 1px;
+   margin-right: 1px;
+   border: 3px solid black;
+   color: black;
+   font: 30px Ampera;
+}
+
+.boton_twitter{
+   text-decoration: none;
+   padding: 10px;
+   font-weight: 60px;
+   background-color: #F8B311;
+   border-radius: 6px;
+   border: 5px solid orange;
+   color: black;
+   font: 35px Ampera;
+}
+
+.boton_pagina{
+   text-decoration: none;
+   padding: 30px;
+   font-weight: 180px;
+   background-color: #F8B311;
+   border-radius: 6px;
+   border: 5px solid orange;
+   color: black;
+   font: 30px Ampera;
+}
+
+img {
+height: 350px;
+display:block;
+margin:auto;
+}
+table {
+    border-spacing: 5px;
+    text-align: center;
+    display:center;
+    margin:auto;
+}
+th, td {
+    padding: 15px;
+    border-color: black;
+}
