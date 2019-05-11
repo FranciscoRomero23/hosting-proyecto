@@ -9,3 +9,5 @@ mysql_password: primeraweb
 site_name: "Mi primera pagina web"
 admin_user: "Francisco Romero"
 admin_password: pruebaansible
+name_user: francisco
+surname_user: romero

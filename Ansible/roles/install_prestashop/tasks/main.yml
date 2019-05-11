@@ -27,8 +27,9 @@
     --db_password={{ mysql_password }} 
     --theme=classic 
     --language=es 
-    --email={{ admin_user }}@{{ domain }}.com 
-    --first-name={{ admin_user }} --second-name={{ admin_user }}
+    --email={{ name_user }}@{{ domain }}.com 
+    --first-name={{ name_user }} 
+    --second-name={{ surname_user }}
 - name: Cambiamos permisos prestashop
   file:
     dest: /var/www/html/{{ domain }}
