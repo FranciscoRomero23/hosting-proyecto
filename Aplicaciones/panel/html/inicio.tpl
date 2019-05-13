@@ -25,6 +25,7 @@
         <a class="boton_personalizado" href="/">Inicio</a>
         <a class="boton_personalizado" href="/software">Software</a>
         <a class="boton_personalizado" href="/logs">Logs</a>
+        <a class="boton_personalizado" href="/logout">Desconectar</a>
       </nav>
     </th>
   </tr>
@@ -33,7 +34,7 @@
 
 <article>
 <h1>El panel de control</h1>
-<p>Este es el panel de control de tu servidor, desde el cual podras hacer diferentes cosas como instalar software o consultar logs</p>
+<p>Este es el panel de control de tu servidor, desde el cual podrás realizar tareas de administración. Entre las acciones que puedes realizar desde este panel de control están: instalar distintos gestores de contenido o ver los logs de los servicios de tu servidor.</p>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>

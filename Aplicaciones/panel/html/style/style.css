@@ -19,7 +19,7 @@ header {
     padding: 0em;
     color: white;
     clear: left;
-    text-align: left;
+    text-align: center;
     text-shadow: 5px 5px 2px #5482C4;
     height:180px;
     color: black;
@@ -110,7 +110,7 @@ article {
     border-left: 0px solid black;
     padding: 3em;
     overflow: hidden;
-    text-align: justify;
+    text-align: center;
     border: black 3px solid;
     border-radius: 2px;
     margin-left: 10px;
@@ -124,7 +124,7 @@ article h1 {
     color: black;
     font: 35px Ampera;
     letter-spacing: -1px;
-    text-align: left;
+    text-align: center;
     text-shadow: 5px 5px 2px #5482C4;
     text-decoration: underline;
 }
@@ -140,7 +140,7 @@ article p {
     color: black;
     font: 25px times;
     letter-spacing: -1px;
-    text-align: justify;
+    text-align: center;
 }
 
 .boton_personalizado{
@@ -154,6 +154,18 @@ article p {
    border: 3px solid black;
    color: black;
    font: 30px Ampera;
+}
+.boton_opcion{
+   text-decoration: none;
+   padding: 5px;
+   font-weight: 30px;
+   background-color: #5482C4;
+   border-radius: 2px;
+   margin-left: 1px;
+   margin-right: 1px;
+   border: 3px solid black;
+   color: black;
+   font: 22px Ampera;
 }
 
 .boton_twitter{

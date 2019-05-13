@@ -5,7 +5,7 @@
 <head>
 <link href="/style/style.css" rel="stylesheet" />
 <link rel="icon" type="image/png" href="/style/images/favicon.png" />
-<title>Logs</title>
+<title>Logs de Mysql</title>
 </head>
 
 <body>
@@ -33,14 +33,7 @@
 </header>
 
 <article>
-<h1>Logs</h1>
-<p>Desde esta pagina podrás consultar los archivos de log de los servicios de tu servidor.</p> 
-<p>Puedes ver los logs de los siguientes servicios:</p><br/><br/>
-      <nav>
-        <a class="boton_opcion" href="/apache-logs">Logs de Apache</a>
-        <a class="boton_opcion" href="/mysql-logs">Logs de MySql</a>
-        <a class="boton_opcion" href="/php-logs">Logs de Php</a>
-      </nav>
+<h1>Logs de Mysql</h1>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>
