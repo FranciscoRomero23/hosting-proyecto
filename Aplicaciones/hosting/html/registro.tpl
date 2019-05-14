@@ -25,6 +25,7 @@
         <a class="boton_personalizado" href="/">Inicio</a>
         <a class="boton_personalizado" href="/servidores">Servidores</a>
         <a class="boton_personalizado" href="/registro">Registro</a>
+        <a class="boton_personalizado" href="/login">Login</a>
       </nav>
     </th>
   </tr>
@@ -32,11 +33,22 @@
 </header>
 
 <article>
-  <h1>Registro de Servidor</h1>
-  <p>Nombre de usuario:</p>
-  <p>Correo electronico:</p>
-  <p>Contraseña:</p>
-  <p>Tipo de servidor:</p>
+  <h1>Registro</h1>
+        <form action="/registro" method="post">
+                Nombre<br/>
+                <input name="name" type="text" /><br/>
+                Apellidos<br/>
+                <input name="surname" type="text" /><br/>
+                DNI<br/>
+                <input name="dni" type="text" /><br/>
+                Correo electrónico<br/>
+                <input name="email" type="text" /><br/>
+                Usuario<br/>
+                <input name="username" type="text" /><br/>
+                Clave<br/>
+                <input name="password" type="password" /><br/>
+                <input value="Registrarse" type="submit" />
+        </form>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>

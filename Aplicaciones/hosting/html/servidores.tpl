@@ -21,11 +21,21 @@
     <th>
     </th>
     <th>
+% if user=='None':
       <nav>
         <a class="boton_personalizado" href="/">Inicio</a>
         <a class="boton_personalizado" href="/servidores">Servidores</a>
         <a class="boton_personalizado" href="/registro">Registro</a>
+        <a class="boton_personalizado" href="/login">Login</a>
       </nav>
+% else:
+      <nav>
+        <a class="boton_personalizado" href="/">Inicio</a>
+        <a class="boton_personalizado" href="/servidores">Servidores</a>
+        <a class="boton_personalizado" href="/perfil">Perfil</a>
+        <a class="boton_personalizado" href="/logout">Desconectar</a>
+      </nav>
+% end
     </th>
   </tr>
 </table>
