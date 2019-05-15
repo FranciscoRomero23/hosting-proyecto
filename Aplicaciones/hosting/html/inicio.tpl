@@ -43,8 +43,9 @@
 
 <article>
   <h1>El hosting automatico</h1>
-  <p>Bienvenido a Auto Hosting, un hosting automatizado mediante el uso de Ansible y Terraform. En la pestaña Servidores 
-     puedes ver los diferentes servidores que puedes contratar y en la pestaña Registro contrata el servidor que se ajuste a sus necesidades.</p>
+  <p>Bienvenido a la página principal de Auto Hosting, un hosting automatizado mediante el uso de los servicios de Ansible y Terraform.</p>
+  <p>Desde nuestra página podrás contratar el servidor que más se ajuste a las necesidades de tu sitio web.</p>
+  <p>Puedes ver los servidores que tenemos disponibles para contratar en la pestaña <i>Servidores</i>.</p>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>

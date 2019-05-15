@@ -1,0 +1,22 @@
+# Sentencias mysql para crear la base de datos de usuarios
+
+# Nombre de la base de datos: hosting
+
+# Tabla Usuarios
+create table usuarios (
+	name varchar(50),
+	surname varchar(50),
+	dni varchar(10),
+	email varchar(50),
+	username varchar(50),
+	password varchar(50),
+	constraint pk_usuarios primary key(dni)
+);
+
+# Tabla Servidores
+create table servidores (
+);
+
+# Tabla SitiosWeb
+create table sitiosweb (
+);

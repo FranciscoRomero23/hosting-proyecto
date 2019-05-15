@@ -42,13 +42,14 @@
 </header>
 
 <article>
-  <h1>Tipos de Servidores</h1>
-  <h2>Servidor 1</h2>
-  <p>Este servidor tiene 1 gb de ram, 1 cpu virtual y 20 gb de disco duro.</p>
-  <h2>Servidor 2</h2>
-  <p>Este servidor tiene 2 gb de ram, 2 cpu virtual y 30 gb de disco duro.</p>
-  <h2>Servidor 3</h2>
-  <p>Este servidor tiene 2 gb de ram, 1 cpu virtual y 30 gb de disco duro.</p>
+  <h1>Servidores en Auto Hosting</h1>
+  <p>En Auto Hosting disponemos de los siguientes servidores:</p>
+  <h2>Servidor Básico</h2>
+  <p>El servidor básico es el que menor categoría tiene entre los servidores que tenemos en Auto Hosting. Dispone de 1 GB de memoria RAM, 1 CPU y 20 GB de disco duro.</p>
+  <h2>Servidor Estándar</h2>
+  <p>El servidor estándar es el servidor de gama media entre  los servidores que tenemos en Auto Hosting. Dispone de 2 GB de memoria RAM, 1 CPU y 30 GB de disco duro.</p>
+  <h2>Servidor Avanzado</h2>
+  <p>El servidor avanzado es el mejor servidor que de momento tenemos en Auto Hosting. Dispone de 2 GB de memoria RAM, 2 CPUs y 40 GB de disco duro.</p>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>

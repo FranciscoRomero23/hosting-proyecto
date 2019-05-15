@@ -2,6 +2,14 @@
 from bottle import route, run, request, template, static_file, redirect,error,get,response
 import bottle
 import bottle_session
+from beaker.middleware import SessionMiddleware
+import mysql.connector
+
+session_opts = {
+    'session.type': 'memory',
+    'session.cookie_expires': 1200,
+    'session.auto': True
+}
 
 app = bottle.app()
 plugin = bottle_session.SessionPlugin(cookie_lifetime=600)
@@ -31,14 +39,28 @@ def registro1():
 	return template('html/registro.tpl')
 
 @route('/registro',method='POST')
-def registro2():
+def registro2(session):
 	name = request.forms.get('name')
 	surname = request.forms.get('surname')
 	dni = request.forms.get('dni')
 	email = request.forms.get('email')
 	username = request.forms.get('username')
 	password = request.forms.get('password')
-	# Insertar datos nuevo usuario en base de datos
+
+	mydb = mysql.connector.connect(
+	  host="localhost",
+	  user="root",
+	  passwd="usuario",
+	  database="hosting"
+	)
+	mycursor = mydb.cursor()
+	sql = "INSERT INTO usuarios VALUES (%s, %s, %s, %s, %s, %s)"
+	val = (name, surname, dni, email, username, password)
+	mycursor.execute(sql, val)
+	mydb.commit()
+
+	user = session.get('name')
+	return template('html/inicio.tpl',user=user)
 
 @route('/login',method='GET')
 def login_user1(session):
@@ -49,8 +71,22 @@ def login_user1(session):
 def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
-	# Buscar la clave para el usuario $username.
+
+#	mydb = mysql.connector.connect(
+#	  host="localhost",
+#	  user="root",
+#	  passwd="usuario",
+#	  database="hosting"
+#	)
+#	mycursor = mydb.cursor()
+#	sql = "select password from usuarios where username = %s"
+#	user = (username, )
+#	mycursor.execute(sql, user)
+#	myresult = mycursor.fetchall()
+#	print(myresult)
+
 	passwd = 'francisco'
+
 	if password==passwd:
 		session['name'] = username
 		user = session.get('name')
@@ -70,4 +106,4 @@ def logout(session):
 def server_static(filepath):
     return static_file(filepath, root='html/style')
 
-run(host='0.0.0.0', port=8080)
+#run(host='0.0.0.0', port=8080)

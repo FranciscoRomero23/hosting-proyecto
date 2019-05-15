@@ -2,6 +2,13 @@
 from bottle import route, run, request, template, static_file, redirect, get, response
 import bottle
 import bottle_session
+from beaker.middleware import SessionMiddleware
+
+session_opts = {
+    'session.type': 'memory',
+    'session.cookie_expires': 1200,
+    'session.auto': True
+}
 
 app = bottle.app()
 plugin = bottle_session.SessionPlugin(cookie_lifetime=600)
@@ -40,8 +47,7 @@ def login_user1(session):
 def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
-	passwd = "francisco"
-	if password==passwd:
+	if username=='webmaster' and password=='francisco':
 		session['name'] = username
 		user = session.get('name')
 		return template('html/inicio.tpl',user=user)
@@ -49,6 +55,7 @@ def login_user2(session):
 		session['name'] = 'None'
 		user = session.get('name')
 		return template('html/login.tpl',user=user)
+	f.close()
 
 @route('/logout')
 def logout(session):
@@ -158,4 +165,4 @@ def logs_php(session):
 def server_static(filepath):
     return static_file(filepath, root='html/style')
 
-run(host='0.0.0.0', port=8080)
+#run(host='0.0.0.0', port=8080)

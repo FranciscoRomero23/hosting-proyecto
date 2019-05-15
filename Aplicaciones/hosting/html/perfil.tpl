@@ -35,6 +35,12 @@
 <article>
   <h1>Perfil de {{user}}</h1>
   <p>Bienvenido a tu perfil, {{user}}.</p>
+  <p>Desde esta página podras administrar tus servidores en Auto Hosting. Tienes las siguientes opciones:</p><br/>
+  <nav>
+    <a class="boton_personalizado" href="/contratar">Contratar</a>
+    <a class="boton_personalizado" href="/servidores">Servidores</a>
+    <a class="boton_personalizado" href="/darbaja">Dar de baja</a>
+  </nav>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>
