@@ -22,10 +22,10 @@
     </th>
     <th>
       <nav>
-        <a class="boton_personalizado" href="/">Inicio</a>
-        <a class="boton_personalizado" href="/software">Software</a>
-        <a class="boton_personalizado" href="/logs">Logs</a>
-        <a class="boton_personalizado" href="/logout">Desconectar</a>
+        <a class="boton_personalizado" href="/panel">Inicio</a>
+        <a class="boton_personalizado" href="/panel/software">Software</a>
+        <a class="boton_personalizado" href="/panel/logs">Logs</a>
+        <a class="boton_personalizado" href="/panel/logout">Desconectar</a>
       </nav>
     </th>
   </tr>
@@ -37,9 +37,9 @@
 <p>Desde esta pagina podrás consultar los archivos de log de los servicios de tu servidor.</p> 
 <p>Puedes ver los logs de los siguientes servicios:</p><br/><br/>
       <nav>
-        <a class="boton_opcion" href="/apache-logs">Logs de Apache</a>
-        <a class="boton_opcion" href="/mysql-logs">Logs de MySql</a>
-        <a class="boton_opcion" href="/php-logs">Logs de Php</a>
+        <a class="boton_opcion" href="/panel/apache-logs">Logs de Apache</a>
+        <a class="boton_opcion" href="/panel/mysql-logs">Logs de MySql</a>
+        <a class="boton_opcion" href="/panel/php-logs">Logs de Php</a>
       </nav>
 </article>
 

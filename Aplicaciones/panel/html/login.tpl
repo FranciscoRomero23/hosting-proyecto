@@ -18,7 +18,7 @@
 
 <article>
 <h1>Inicio de sesión</h1>
-	<form action="/login" method="post">
+	<form action="/panel/login" method="post">
 		Usuario<br/>
 		<input name="username" type="text" /><br/>
 		Contraseña<br/>

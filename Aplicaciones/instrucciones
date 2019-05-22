@@ -1,0 +1,8 @@
+# Instrucciones para instalar las aplicaciones web
+
+1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv y redis-server
+2. Crear el virtualhost bottle e instalar los paquetes del requeriments.txt
+3. Copiar la web a /var/www/html/hosting o /var/www/html/panel
+4. Cambiar usuario/grupo del directorio root de la web
+5. Cambiar ruta virtualenv en el virtualhost
+6. Copiar y activar el virtualhsot

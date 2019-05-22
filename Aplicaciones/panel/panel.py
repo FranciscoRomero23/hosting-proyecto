@@ -15,6 +15,10 @@ plugin = bottle_session.SessionPlugin(cookie_lifetime=600)
 app.install(plugin)
 
 @route('/')
+def web():
+	return template('html/web.tpl')
+
+@route('/panel')
 def inicio(session):
 	user = session.get('name')
 	if user=='None':
@@ -22,7 +26,7 @@ def inicio(session):
 	else:
 		return template('html/inicio.tpl',user=user)
 
-@route('/software')
+@route('/panel/software')
 def software(session):
 	user = session.get('name')
 	if user=='None':
@@ -30,20 +34,20 @@ def software(session):
 	else:
 		return template('html/software.tpl',user=user)
 
-@route('/logs')
+@route('/panel/logs')
 def logs(session):
 	user = session.get('name')
 	if user=='None':
 		return template('html/login.tpl',user=user)
 	else:
-			return template('html/logs.tpl',user=user)
+		return template('html/logs.tpl',user=user)
 
-@route('/login',method='GET')
+@route('/panel/login',method='GET')
 def login_user1(session):
 	user = session.get('name')
 	return template('html/login.tpl',user=user)
 
-@route('/login',method='POST')
+@route('/panel/login',method='POST')
 def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
@@ -57,12 +61,12 @@ def login_user2(session):
 		return template('html/login.tpl',user=user)
 	f.close()
 
-@route('/logout')
+@route('/panel/logout')
 def logout(session):
 	session['name'] = 'None'
-	redirect ("/login")
+	redirect ("/panel/login")
 
-@route('/drupal',method='GET')
+@route('/panel/drupal',method='GET')
 def drupal1(session):
 	user = session.get('name')
 	if user=='None':
@@ -70,7 +74,7 @@ def drupal1(session):
 	else:
 		return template('html/drupal.tpl',user=user)
 
-@route('/drupal',method='POST')
+@route('/panel/drupal',method='POST')
 def drupal2(session):
 	namedb = request.forms.get('namedb')
 	userdb = request.forms.get('userdb')
@@ -87,7 +91,7 @@ def drupal2(session):
 	else:
 		return template('html/drupal.tpl',user=user)
 
-@route('/prestashop',method='GET')
+@route('/panel/prestashop',method='GET')
 def prestashop1(session):
         user = session.get('name')
         if user=='None':
@@ -95,7 +99,7 @@ def prestashop1(session):
         else:
                 return template('html/prestashop.tpl',user=user)
 
-@route('/prestashop',method='POST')
+@route('/panel/prestashop',method='POST')
 def prestashop2(session):
         namedb = request.forms.get('namedb')
         userdb = request.forms.get('userdb')
@@ -112,7 +116,7 @@ def prestashop2(session):
         else:
                 return template('html/prestashop.tpl',user=user)
 
-@route('/mediawiki',method='GET')
+@route('/panel/mediawiki',method='GET')
 def mediawiki1(session):
         user = session.get('name')
         if user=='None':
@@ -120,7 +124,7 @@ def mediawiki1(session):
         else:
                 return template('html/mediawiki.tpl',user=user)
 
-@route('/mediawiki',method='POST')
+@route('/panel/mediawiki',method='POST')
 def mediawiki2(session):
         namedb = request.forms.get('namedb')
         userdb = request.forms.get('userdb')
@@ -137,7 +141,7 @@ def mediawiki2(session):
         else:
                 return template('html/mediawiki.tpl',user=user)
 
-@route('/apache-logs')
+@route('/panel/apache-logs')
 def logs_apache(session):
         user = session.get('name')
         if user=='None':
@@ -145,7 +149,7 @@ def logs_apache(session):
         else:
                 return template('html/apache-logs.tpl',user=user)
 
-@route('/mysql-logs')
+@route('/panel/mysql-logs')
 def logs_mysql(session):
         user = session.get('name')
         if user=='None':
@@ -153,7 +157,7 @@ def logs_mysql(session):
         else:
                 return template('html/mysql-logs.tpl',user=user)
 
-@route('/php-logs')
+@route('/panel/php-logs')
 def logs_php(session):
         user = session.get('name')
         if user=='None':
@@ -165,4 +169,4 @@ def logs_php(session):
 def server_static(filepath):
     return static_file(filepath, root='html/style')
 
-#run(host='0.0.0.0', port=8080)
+run(host='0.0.0.0', port=8080)

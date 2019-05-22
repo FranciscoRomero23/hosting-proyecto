@@ -22,10 +22,10 @@
     </th>
     <th>
       <nav>
-        <a class="boton_personalizado" href="/">Inicio</a>
-        <a class="boton_personalizado" href="/software">Software</a>
-        <a class="boton_personalizado" href="/logs">Logs</a>
-        <a class="boton_personalizado" href="/logout">Desconectar</a>
+        <a class="boton_personalizado" href="/panel">Inicio</a>
+        <a class="boton_personalizado" href="/panel/software">Software</a>
+        <a class="boton_personalizado" href="/panel/logs">Logs</a>
+        <a class="boton_personalizado" href="/panel/logout">Desconectar</a>
       </nav>
     </th>
   </tr>
@@ -37,9 +37,9 @@
 <p>Desde esta página podrás instalar cualquiera de los gestores de contenido que disponemos.</p>
 <p>Puedes instalar los siguientes gestores de contenido:</p><br/><br/>
       <nav>
-        <a class="boton_opcion" href="/drupal">Drupal</a>
-        <a class="boton_opcion" href="/prestashop">Prestashop</a>
-        <a class="boton_opcion" href="/mediawiki">Mediawiki</a>
+        <a class="boton_opcion" href="/panel/drupal">Drupal</a>
+        <a class="boton_opcion" href="/panel/prestashop">Prestashop</a>
+        <a class="boton_opcion" href="/panel/mediawiki">Mediawiki</a>
       </nav>
 </article>
 

@@ -22,10 +22,10 @@
     </th>
     <th>
       <nav>
-        <a class="boton_personalizado" href="/">Inicio</a>
-        <a class="boton_personalizado" href="/software">Software</a>
-        <a class="boton_personalizado" href="/logs">Logs</a>
-        <a class="boton_personalizado" href="/logout">Desconectar</a>
+        <a class="boton_personalizado" href="/panel">Inicio</a>
+        <a class="boton_personalizado" href="/panel/software">Software</a>
+        <a class="boton_personalizado" href="/panel/logs">Logs</a>
+        <a class="boton_personalizado" href="/panel/logout">Desconectar</a>
       </nav>
     </th>
   </tr>

@@ -22,10 +22,10 @@
     </th>
     <th>
       <nav>
-        <a class="boton_personalizado" href="/">Inicio</a>
-        <a class="boton_personalizado" href="/software">Software</a>
-        <a class="boton_personalizado" href="/logs">Logs</a>
-        <a class="boton_personalizado" href="/logout">Desconectar</a>
+        <a class="boton_personalizado" href="/panel">Inicio</a>
+        <a class="boton_personalizado" href="/panel/software">Software</a>
+        <a class="boton_personalizado" href="/panel/logs">Logs</a>
+        <a class="boton_personalizado" href="/panel/logout">Desconectar</a>
       </nav>
     </th>
   </tr>
@@ -35,7 +35,7 @@
 <article>
 <h1>Instalación de Prestashop</h1>
 <p>Desde esta página podras instalar un Prestashop en tu servidor. Para que se pueda realizar la instalación, necesito que nos facilites los siguientes datos:</p>
-<form action="/prestashop" method="post">
+<form action="/panel/prestashop" method="post">
         Base de datos<br/>
         <input name="namedb" type="text" size="30" /><br/>
         Usuario<br/>
