@@ -1,6 +1,12 @@
-# Sentencias mysql para crear la base de datos de usuarios
+# Sentencias mysql para crear la base de datos del hosting
 
 # Nombre de la base de datos: hosting
+create database hosting;
+
+# Usuario y contraseña para la base de datos
+create user 'hosting'@'localhost' identified by 'hosting';
+grant all privileges on hosting.* to 'hosting'@'localhost';
+flush privileges;
 
 # Tabla Usuarios
 create table usuarios (

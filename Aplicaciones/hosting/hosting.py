@@ -47,15 +47,21 @@ def registro2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
 
+	# Conexion con la base de datos
 	mydb = mysql.connector.connect(
 	  host="localhost",
-	  user="root",
-	  passwd="usuario",
+	  user="hosting",
+	  passwd="hosting",
 	  database="hosting"
 	)
+
+	# Ciframos la contraseña que vamos a registrar
+	hashpassword=hashlib.md5(password.encode('utf-8')).hexdigest()
+
+	# Insertamos un nuevo usuario en la base de datos
 	mycursor = mydb.cursor()
 	sql = "INSERT INTO usuarios VALUES (%s, %s, %s, %s, %s, %s)"
-	val = (name, surname, dni, email, username, password)
+	val = (name, surname, dni, email, username, hashpassword)
 	mycursor.execute(sql, val)
 	mydb.commit()
 
@@ -72,29 +78,67 @@ def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
 
-#	mydb = mysql.connector.connect(
-#	  host="localhost",
-#	  user="root",
-#	  passwd="usuario",
-#	  database="hosting"
-#	)
-#	mycursor = mydb.cursor()
-#	sql = "select password from usuarios where username = %s"
-#	user = (username, )
-#	mycursor.execute(sql, user)
-#	myresult = mycursor.fetchall()
-#	print(myresult)
+	# Ciframos la contraseña obtenida en el formulario
+	hashpassword=hashlib.md5(password.encode('utf-8')).hexdigest()
 
-	passwd = 'francisco'
+	# Conexion con la base de datos
+	mydb = mysql.connector.connect(
+	  host="localhost",
+	  user="hosting",
+	  passwd="hosting",
+	  database="hosting"
+	)
 
-	if password==passwd:
-		session['name'] = username
-		user = session.get('name')
-		redirect ("/perfil")
-	else:
+	# Comprobamos si el usuario existe
+	mycursor = mydb.cursor()
+	sql = "select count(*) from usuarios where username = %s"
+	user = (username, )
+	mycursor.execute(sql, user)
+	records = mycursor.fetchall()
+	for row in records:
+		usercount=row[0]
+	mycursor.close()
+
+	if usercount==0:
 		session['name'] = 'None'
 		user = session.get('name')
 		return template('html/login.tpl',user=user)
+	else:
+		# Conexion con la base de datos
+		mydb = mysql.connector.connect(
+		  host="localhost",
+		  user="hosting",
+		  passwd="hosting",
+		  database="hosting"
+		)
+
+		# Buscamos la contraseña en la base de datos
+		mycursor = mydb.cursor()
+		sql = "select password from usuarios where username = %s"
+		user = (username, )
+		mycursor.execute(sql, user)
+		records = mycursor.fetchall()
+
+		for row in records:
+			newpassword=row[0]
+		mycursor.close()
+
+		# Comprobamos que la contraseña introducida no esta vacia
+		if password=="":
+	                session['name'] = 'None'
+	                user = session.get('name')
+	                return template('html/login.tpl',user=user)
+		else:
+			# Comparamos los hashes de las contraseñas
+			if hashpassword==newpassword:
+				session['name'] = username
+				user = session.get('name')
+				redirect ("/perfil")
+			else:
+				session['name'] = 'None'
+				user = session.get('name')
+				return template('html/login.tpl',user=user)
+
 
 @route('/logout')
 def logout(session):

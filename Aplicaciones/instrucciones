@@ -1,8 +1,33 @@
 # Instrucciones para instalar las aplicaciones web
 
-1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv y redis-server
-2. Crear el virtualhost bottle e instalar los paquetes del requeriments.txt
-3. Copiar la web a /var/www/html/hosting o /var/www/html/panel
-4. Cambiar usuario/grupo del directorio root de la web
-5. Cambiar ruta virtualenv en el virtualhost
-6. Copiar y activar el virtualhsot
+1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv y redis-server:
+	apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv redis-server -y
+   Si la aplicacion web es la del hosting, hay que instalar tambien mysql:
+        apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv redis-server mysql-server mysql-client -y
+
+2. Crear el virtualhost bottle e instalar los paquetes del requeriments.txt:
+	virtualenv -p /usr/bin/python3 bottle
+	source bottle/bin/activate
+	pip3 install -r requeriments.txt:
+
+3. Copiar la aplicacion web a /var/www/html/hosting si es la web del hosting:
+	mkdir /var/www/html/hosting
+	cp -r ~/hosting-proyecto/Aplicaciones/hosting/* /var/www/html/hosting
+   Si la aplicacion web es la del panel, seria a /var/www/html/panel:
+        mkdir /var/www/html/panel
+        cp -r ~/hosting-proyecto/Aplicaciones/panel/* /var/www/html/panel
+
+4. Cambiar usuario/grupo del directorio root de las aplicaciones web:
+	chown -R www-data:www-data /var/www/html/hosting
+	chown -R www-data:www-data /var/www/html/panel 
+
+5. Copiar y activar el virtualhost:
+	cd ~/hosting-proyecto/Aplicaciones/hosting
+	cp hosting.conf /etc/apache2/sites-available/
+	a2dissite 000-default
+	a2ensite hosting
+   Si la aplicacion web es la del panel:
+	cd ~/hosting-proyecto/Aplicaciones/panel
+	cp panel.conf /etc/apache2/sites-available/
+	a2dissite 000-default
+	a2ensite panel
