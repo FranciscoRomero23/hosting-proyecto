@@ -32,6 +32,7 @@
       <nav>
         <a class="boton_personalizado" href="/">Inicio</a>
         <a class="boton_personalizado" href="/servidores">Servidores</a>
+	<a class="boton_personalizado" href="/crearserver">Contratar</a>
         <a class="boton_personalizado" href="/perfil">Perfil</a>
         <a class="boton_personalizado" href="/logout">Desconectar</a>
       </nav>
