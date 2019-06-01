@@ -25,6 +25,7 @@ create table servidores (
 	type varchar(20),
 	user varchar(10),
 	pass_webmaster varchar(50),
+	public_dns varchar(60),
 	constraint pk_servidores primary key (name),
 	constraint fk_servidores foreign key (user) references usuarios (dni)
 );

@@ -215,6 +215,28 @@ def crearserver2(session):
 	if user=='None':
 		redirect ("/")
 	else:
+		name = request.forms.get('name')
+		tipo = request.forms.get('servidor')
+		pass_webmaster = request.forms.get('passwd_webmaster')
+
+		# Creamos el servidor con terraform
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
+		fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
+		fichero.write(datosservidor)
+		fichero.close()
+		os.chdir("/var/www/html/hosting/terraform")
+		subprocess.run(["/home/terraform/terraform", "plan"])
+		subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
+
+		# Obtenemos el dns publico del servidor
+		os.chdir("/var/www/html/hosting/terraform")
+		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_dns | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
+		dns=subprocess.check_output(cmd,shell=True)
+
+		# Configuramos el servidor con ansible
+
+		# Añadimos el servidor al servidor dns
+
 		# Conexion con la base de datos
 		mydb = mysql.connector.connect(
 		  host="localhost",
@@ -229,29 +251,20 @@ def crearserver2(session):
 		user = (user, )
 		mycursor.execute(sql, user)
 		records = mycursor.fetchall()
-
 		for row in records:
 			dni=row[0]
 		mycursor.close()
-
-
-		name = request.forms.get('name')
-		tipo = request.forms.get('servidor')
-		pass_webmaster = request.forms.get('passwd_webmaster')
 
 		# Ciframos la contraseña obtenida para el webmaster
 		hashpassword=hashlib.md5(pass_webmaster.encode('utf-8')).hexdigest()
 
 		# Insertamos un nuevo servidor en la base de datos
 		mycursor = mydb.cursor()
-		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s)"
-		val = (name, tipo, dni, hashpassword)
+		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s, %s)"
+		val = (name, tipo, dni, hashpassword,dns)
 		mycursor.execute(sql, val)
 		mydb.commit()
 
-		# Creamos el servidor con terraform
-
-		# Configuramos el servidor con ansible
 
 		# Obtenemos la cantidad de servidores que tiene el usuario
 		mycursor = mydb.cursor()
@@ -283,6 +296,20 @@ def borrarserver(session,nameserver):
 	if user=='None':
 		redirect ("/")
 	else:
+		# Borramos el servidor con terraform
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
+		f = open("/var/www/html/hosting/terraform/main.tf",'r')
+		cambio = f.read()
+		cambio = cambio.replace(datosservidor,"")
+		f.close()
+		f = open("/var/www/html/hosting/terraform/main.tf",'w')
+		f.write(cambio)
+		f.close()
+
+		os.chdir("/var/www/html/hosting/terraform")
+		subprocess.run(["/home/terraform/terraform", "plan"])
+		subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
+
 		# Conexion con la base de datos
 		mydb = mysql.connector.connect(
 		  host="localhost",
@@ -299,7 +326,7 @@ def borrarserver(session,nameserver):
 		mycursor.close()
 		mydb.commit()
 
-		# Borramos el servidor con terraform
+		# Borramos el servidor del servidor dns
 
 		# Obtenemos el dni del dueño del servidor
 		mycursor = mydb.cursor()
