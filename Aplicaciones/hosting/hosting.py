@@ -5,6 +5,8 @@ import bottle_session
 from beaker.middleware import SessionMiddleware
 import mysql.connector
 import hashlib
+import os
+import subprocess
 
 session_opts = {
     'session.type': 'memory',

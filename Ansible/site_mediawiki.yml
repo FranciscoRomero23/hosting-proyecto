@@ -1,7 +1,8 @@
 ---
-- name: Instación de Mediawiki
+- name: Instalación de Mediawiki
   hosts: 127.0.0.1
   connection: local
+  become: yes
 
   roles:
     - common

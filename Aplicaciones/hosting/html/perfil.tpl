@@ -36,9 +36,9 @@
 <article>
   <h1>Perfil de {{user}}</h1>
   <p>Bienvenido a tu perfil, {{user}}.</p>
-  <p>Desde esta página podras administrar tus servidores en Auto Hosting.
+  <p>Desde esta página podrás administrar tus servidores en Auto Hosting.</p>
 % if servercount==0:
-  <p>Aun no tienes servidores para administrar</p>
+  <p>Aún no tienes servidores para administrar, puedes contratar nuevos servidores en la pestaña <i>Contratar</i>.</p>
 % else:
   <p>Tus servidores para administrar son:</p>
 % for server in listaservidores:
@@ -60,7 +60,6 @@
 <br/>
 % end
 % end
-
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>
