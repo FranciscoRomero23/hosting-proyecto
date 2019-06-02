@@ -221,6 +221,9 @@ def crearserver2(session):
 		tipo = request.forms.get('servidor')
 		pass_webmaster = request.forms.get('passwd_webmaster')
 
+		# Ciframos la contraseña obtenida para el webmaster
+		hashpassword=hashlib.md5(pass_webmaster.encode('utf-8')).hexdigest()
+
 		# Creamos el servidor con terraform
 		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
 		fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
@@ -230,14 +233,19 @@ def crearserver2(session):
 		subprocess.run(["/home/terraform/terraform", "plan"])
 		subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
 
-		# Obtenemos el dns publico del servidor
-		os.chdir("/var/www/html/hosting/terraform")
-		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_dns | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
-		dns=subprocess.check_output(cmd,shell=True)
-
 		# Configuramos el servidor con ansible
 
+		# Obtenemos la ip publica del servidor
+		os.chdir("/var/www/html/hosting/terraform")
+		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
+		publicip=subprocess.check_output(cmd,shell=True)
+
 		# Añadimos el servidor al servidor dns
+		newserver='%s %s.autohosting.com'$(str(publicip),str(name))
+		fichero = open ('/etc/hosts','a')
+		fichero.write(newserver)
+		fichero.close()
+		subprocess.run(["systemctl","restart","dnsmasq"])
 
 		# Conexion con la base de datos
 		mydb = mysql.connector.connect(
@@ -257,16 +265,12 @@ def crearserver2(session):
 			dni=row[0]
 		mycursor.close()
 
-		# Ciframos la contraseña obtenida para el webmaster
-		hashpassword=hashlib.md5(pass_webmaster.encode('utf-8')).hexdigest()
-
 		# Insertamos un nuevo servidor en la base de datos
 		mycursor = mydb.cursor()
 		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s, %s)"
-		val = (name, tipo, dni, hashpassword,dns)
+		val = (name, tipo, dni, hashpassword,publicip)
 		mycursor.execute(sql, val)
 		mydb.commit()
-
 
 		# Obtenemos la cantidad de servidores que tiene el usuario
 		mycursor = mydb.cursor()
@@ -298,6 +302,22 @@ def borrarserver(session,nameserver):
 	if user=='None':
 		redirect ("/")
 	else:
+		# Obtenemos la ip publica del servidor
+		os.chdir("/var/www/html/hosting/terraform")
+		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
+		publicip=subprocess.check_output(cmd,shell=True)
+
+		# Borramos el servidor del servidor dns
+		newserver='%s %s.autohosting.com'$(str(publicip),str(name))
+		fichero = open("/etc/hosts",'r')
+		cambio = f.read()
+		cambio = cambio.replace(newserver,"")
+		fichero.close()
+		fichero = open("/etc/hosts",'w')
+		fichero.write(cambio)
+		fichero.close()
+		subprocess.run(["systemctl","restart","dnsmasq"])
+
 		# Borramos el servidor con terraform
 		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
 		f = open("/var/www/html/hosting/terraform/main.tf",'r')
@@ -327,8 +347,6 @@ def borrarserver(session,nameserver):
 		mycursor.execute(sql, borrar)
 		mycursor.close()
 		mydb.commit()
-
-		# Borramos el servidor del servidor dns
 
 		# Obtenemos el dni del dueño del servidor
 		mycursor = mydb.cursor()
