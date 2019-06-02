@@ -1,0 +1,49 @@
+# Instrucciones para instalar la aplicacion del hosting
+
+1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv, redis-server, git, mysql-server, mysql-client, dnsmasq y unzip:
+
+        apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv redis-server git mysql-server mysql-client dnsmasq unzip -y
+
+2. Crear el virtualhost bottle e instalar los paquetes del requeriments.txt:
+
+	virtualenv -p /usr/bin/python3 bottle
+	source bottle/bin/activate
+	pip3 install -r ~/hosting-proyecto/Aplicaciones/hosting/requeriments.txt:
+
+3. Copiar la aplicacion web a /var/www/html/hosting:
+
+	mkdir /var/www/html/hosting
+	cp -r ~/hosting-proyecto/Aplicaciones/hosting/* /var/www/html/hosting
+
+4. Mover el /etc/hosts a directorio root de la aplicacion web y crear enlace simbolico:
+
+	mv /etc/hosts /var/www/html/hosting/hosts
+	ln -s /var/www/html/hosting/hosts /etc/hosts
+
+5. Descargar terraform y dejarlo en el directorio /home/terraform
+
+	mkdir /home/terraform
+	wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip -O /home/terraform/terraform.zip
+	unzip /home/terraform/terraform.zip
+	rm /home/terraform/terraform.zip
+
+6. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
+
+	mkdir /var/www/html/hosting/terraform	
+	nano /var/www/html/hosting/terraform/main.tf
+
+7. Cambiar usuario/grupo del directorio root de la aplicacion web:
+
+	chown -R www-data:www-data /var/www/html/hosting
+
+8. Copiar y activar el virtualhost:
+
+	cd ~/hosting-proyecto/Aplicaciones/hosting
+	cp hosting.conf /etc/apache2/sites-available/
+	a2dissite 000-default
+	a2ensite hosting
+
+9. Reiniciar apache2 y dnsmasq:
+
+	systemctl restart apache2
+	systemctl restart dnsmasq

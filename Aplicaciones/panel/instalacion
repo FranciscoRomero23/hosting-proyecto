@@ -1,0 +1,31 @@
+# Instrucciones para instalar la aplicacion del panel
+
+1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv, redis-server, git, mysql-server y mysql-client:
+
+        apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv redis-server git mysql-server mysql-client -y
+
+2. Crear el virtualhost bottle e instalar los paquetes del requeriments.txt:
+	virtualenv -p /usr/bin/python3 bottle
+	source bottle/bin/activate
+	pip3 install -r requeriments.txt:
+
+3. Copiar la aplicacion web a /var/www/html/panel:
+
+	mkdir /var/www/html/panel
+	cp -r ~/hosting-proyecto/Aplicaciones/panel/* /var/www/html/panel
+
+4. Cambiar usuario/grupo del directorio root de la aplicacion web:
+
+	chown -R www-data:www-data /var/www/html/hosting
+
+5. Copiar y activar el virtualhost:
+
+	cd ~/hosting-proyecto/Aplicaciones/panel
+	cp hosting.conf /etc/apache2/sites-available/
+	a2dissite 000-default
+	a2ensite panel
+
+6. Reiniciar apache2:
+
+	systemctl restart apache2
+

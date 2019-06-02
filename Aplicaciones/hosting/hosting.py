@@ -238,10 +238,11 @@ def crearserver2(session):
 		# Obtenemos la ip publica del servidor
 		os.chdir("/var/www/html/hosting/terraform")
 		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
-		publicip=subprocess.check_output(cmd,shell=True)
+		ip=subprocess.check_output(cmd,shell=True)
+		publicip=ip.decode('utf-8')[:-1]
 
 		# Añadimos el servidor al servidor dns
-		newserver='%s %s.autohosting.com'$(str(publicip),str(name))
+		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
 		fichero = open ('/etc/hosts','a')
 		fichero.write(newserver)
 		fichero.close()
@@ -305,10 +306,11 @@ def borrarserver(session,nameserver):
 		# Obtenemos la ip publica del servidor
 		os.chdir("/var/www/html/hosting/terraform")
 		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
-		publicip=subprocess.check_output(cmd,shell=True)
+		ip=subprocess.check_output(cmd,shell=True)
+		publicip=ip.decode('utf-8')[:-1]
 
 		# Borramos el servidor del servidor dns
-		newserver='%s %s.autohosting.com'$(str(publicip),str(name))
+		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
 		fichero = open("/etc/hosts",'r')
 		cambio = f.read()
 		cambio = cambio.replace(newserver,"")
