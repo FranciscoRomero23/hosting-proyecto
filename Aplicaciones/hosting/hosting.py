@@ -221,7 +221,7 @@ def crearserver2(session):
 		tipo = request.forms.get('servidor')
 
 		# Creamos el servidor con terraform
-		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
 		fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
 		fichero.write(datosservidor)
 		fichero.close()
@@ -242,17 +242,17 @@ def crearserver2(session):
 		fichero.close()
 
 		# Instalamos el panel en el servidor con ansible
-		fichero = open ('/home/usuario/hosting-proyecto/Ansible/ansible_hosts','w')
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/ansible_hosts','w')
 		fichero.write(publicip)
 		fichero.close()
 
-		subprocess.call(["ansible-playbook", "/home/usuario/hosting-proyecto/Ansible/install_panel.yml"])
+		subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/install_panel.yml"])
 
-		f = open("/home/usuario/hosting-proyecto/Ansible/ansible_hosts",'r')
+		f = open("/home/admin/hosting-proyecto/Ansible/ansible_hosts",'r')
 		cambio = f.read()
 		cambio = cambio.replace(publicip,"")
 		f.close()
-		f = open("/home/usuario/hosting-proyecto/Ansible/ansible_hosts",'w')
+		f = open("/home/admin/hosting-proyecto/Ansible/ansible_hosts",'w')
 		f.write(cambio)
 		f.close()
 
@@ -334,7 +334,7 @@ def borrarserver(session,nameserver):
 		fichero.close()
 
 		# Borramos el servidor con terraform
-		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
 		f = open("/var/www/html/hosting/terraform/main.tf",'r')
 		cambio = f.read()
 		cambio = cambio.replace(datosservidor,"")
