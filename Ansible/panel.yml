@@ -1,0 +1,8 @@
+---
+- name: Instalación del Panel de Control
+  hosts: all
+  become: yes
+
+  roles:
+    - common
+    - install_panel

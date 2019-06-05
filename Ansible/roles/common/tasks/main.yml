@@ -5,6 +5,11 @@
   apt: pkg={{ item }}
   with_items:
     - apache2
+    - libapache2-mod-wsgi-py3
+    - python-virtualenv
+    - redis-server
+    - git
+    - ansible
     - php7.0
     - mariadb-server
     - mariadb-client

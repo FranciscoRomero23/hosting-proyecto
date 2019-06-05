@@ -23,9 +23,10 @@
 5. Descargar terraform y dejarlo en el directorio /home/terraform
 
 	mkdir /home/terraform
-	wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip -O /home/terraform/terraform.zip
-	unzip /home/terraform/terraform.zip
-	rm /home/terraform/terraform.zip
+	cd /home/terraform
+	wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip -O
+	unzip terraform_0.12.0_linux_amd64.zip
+	rm terraform_0.12.0_linux_amd64.zip
 
 6. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
 
@@ -36,14 +37,16 @@
 
 	chown -R www-data:www-data /var/www/html/hosting
 
-8. Copiar y activar el virtualhost:
+8. Crear el usuario y la base de datos para la aplicacion web (esta todo en el fichero database_hosting)
+
+9. Copiar y activar el virtualhost:
 
 	cd ~/hosting-proyecto/Aplicaciones/hosting
 	cp hosting.conf /etc/apache2/sites-available/
 	a2dissite 000-default
 	a2ensite hosting
 
-9. Reiniciar apache2 y dnsmasq:
+10. Reiniciar apache2 y dnsmasq:
 
 	systemctl restart apache2
 	systemctl restart dnsmasq

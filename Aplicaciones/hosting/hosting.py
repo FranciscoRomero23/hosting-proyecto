@@ -19,7 +19,7 @@ plugin = bottle_session.SessionPlugin(cookie_lifetime=600)
 app.install(plugin)
 
 listaservidores = []
-
+user = "None"
 @route('/')
 def inicio(session):
         user = session.get('name')
@@ -233,20 +233,33 @@ def crearserver2(session):
 		subprocess.run(["/home/terraform/terraform", "plan"])
 		subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
 
-		# Configuramos el servidor con ansible
-
 		# Obtenemos la ip publica del servidor
 		os.chdir("/var/www/html/hosting/terraform")
 		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
 		ip=subprocess.check_output(cmd,shell=True)
 		publicip=ip.decode('utf-8')[:-1]
 
+		# Configuramos el servidor con ansible
+		fichero = open ('/home/usuario/hosting-proyecto/Ansible/ansible_hosts','w')
+		fichero.write(publicip)
+		fichero.close()
+
+		subprocess.call(["ansible-playbook", "/home/usuario/hosting-proyecto/Ansible/install_panel.yml"])
+
+		f = open("/home/usuario/hosting-proyecto/Ansible/ansible_hosts",'r')
+		cambio = f.read()
+		cambio = cambio.replace(publicip,"")
+		f.close()
+		f = open("/home/usuario/hosting-proyecto/Ansible/ansible_hosts",'w')
+		f.write(cambio)
+		f.close()
+
+
 		# Añadimos el servidor al servidor dns
 		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
 		fichero = open ('/etc/hosts','a')
 		fichero.write(newserver)
 		fichero.close()
-		subprocess.run(["systemctl","restart","dnsmasq"])
 
 		# Conexion con la base de datos
 		mydb = mysql.connector.connect(
@@ -305,20 +318,19 @@ def borrarserver(session,nameserver):
 	else:
 		# Obtenemos la ip publica del servidor
 		os.chdir("/var/www/html/hosting/terraform")
-		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
+		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(nameserver))
 		ip=subprocess.check_output(cmd,shell=True)
 		publicip=ip.decode('utf-8')[:-1]
 
 		# Borramos el servidor del servidor dns
-		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
+		newserver='%s %s.autohosting.com\n'%(publicip,str(nameserver))
 		fichero = open("/etc/hosts",'r')
-		cambio = f.read()
+		cambio = fichero.read()
 		cambio = cambio.replace(newserver,"")
 		fichero.close()
 		fichero = open("/etc/hosts",'w')
 		fichero.write(cambio)
 		fichero.close()
-		subprocess.run(["systemctl","restart","dnsmasq"])
 
 		# Borramos el servidor con terraform
 		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
