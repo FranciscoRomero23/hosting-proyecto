@@ -2,7 +2,8 @@
 <html lang="es">
 <html>
 
-<p>prueba.autohosting.com</p>
+<p>{{server}}.autohosting.com</p>
 
 </body>
 </html>
+

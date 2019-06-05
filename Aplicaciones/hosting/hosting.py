@@ -219,10 +219,6 @@ def crearserver2(session):
 	else:
 		name = request.forms.get('name')
 		tipo = request.forms.get('servidor')
-		pass_webmaster = request.forms.get('passwd_webmaster')
-
-		# Ciframos la contraseña obtenida para el webmaster
-		hashpassword=hashlib.md5(pass_webmaster.encode('utf-8')).hexdigest()
 
 		# Creamos el servidor con terraform
 		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-07dc734dc14746eab"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
@@ -239,7 +235,13 @@ def crearserver2(session):
 		ip=subprocess.check_output(cmd,shell=True)
 		publicip=ip.decode('utf-8')[:-1]
 
-		# Configuramos el servidor con ansible
+		# Modificamos el fichero de variables para la instalación del panel
+		nombreserver="---\nserver: %s\n"%(str(name))
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
+		fichero.write(nombreserver)
+		fichero.close()
+
+		# Instalamos el panel en el servidor con ansible
 		fichero = open ('/home/usuario/hosting-proyecto/Ansible/ansible_hosts','w')
 		fichero.write(publicip)
 		fichero.close()
@@ -253,7 +255,6 @@ def crearserver2(session):
 		f = open("/home/usuario/hosting-proyecto/Ansible/ansible_hosts",'w')
 		f.write(cambio)
 		f.close()
-
 
 		# Añadimos el servidor al servidor dns
 		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
@@ -281,8 +282,8 @@ def crearserver2(session):
 
 		# Insertamos un nuevo servidor en la base de datos
 		mycursor = mydb.cursor()
-		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s, %s)"
-		val = (name, tipo, dni, hashpassword,publicip)
+		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s)"
+		val = (name, tipo, dni, publicip)
 		mycursor.execute(sql, val)
 		mydb.commit()
 

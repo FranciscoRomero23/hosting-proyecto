@@ -24,12 +24,8 @@ create table servidores (
 	name varchar(20),
 	type varchar(20),
 	user varchar(10),
-	pass_webmaster varchar(50),
 	public_ip varchar(20),
 	constraint pk_servidores primary key (name),
 	constraint fk_servidores foreign key (user) references usuarios (dni)
 );
 
-# Tabla SitiosWeb
-create table sitiosweb (
-);

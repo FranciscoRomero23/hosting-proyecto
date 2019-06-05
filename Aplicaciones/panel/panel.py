@@ -3,6 +3,7 @@ from bottle import route, run, request, template, static_file, redirect, get, re
 import bottle
 import bottle_session
 from beaker.middleware import SessionMiddleware
+import subprocess
 
 session_opts = {
     'session.type': 'memory',
@@ -53,12 +54,7 @@ def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
 
-	# Leemos la contraseña del webmaster desde un fichero, el cual se crea durante la creación del servidor
-	fichero = open ('webmasterpassword.txt','r')
-	secretpasswd = fichero.read()[:-1]
-	fichero.close()
-
-	if username=='webmaster' and password==secretpasswd:
+	if username=='webmaster' and password=='webmaster':
 		session['name'] = username
 		user = session.get('name')
 		return template('html/inicio.tpl',user=user)
@@ -101,14 +97,14 @@ def drupal2(session):
 		datosmysql="mysql_db: %s\nmysql_user: %s\nmysql_password: %s\n"%(str(namedb),str(userdb),str(passdb))
 		datoscms='site_name: "%s"\nadmin_user: %s\nadmin_password: %s\nname_user: %s\nsurname_user: %s'%(str(site_name),str(admin_name),str(admin_passwd),str(name_user),str(surname_user))
 
-		fichero = open ('/home/usuario/hosting-proyecto/Ansible/group_vars/all','w')
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
 		fichero.write(dominio)
 		fichero.write(datosmysql)
 		fichero.write(datoscms)
 		fichero.close()
 
 		# Instalamos drupal con ansible
-		subprocess.call(["ansible-playbook", "/home/usuario/hosting-proyecto/Ansible/site_drupal.yml"])
+		subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/site_drupal.yml"])
 
 		return template('html/drupal.tpl',user=user)
 
@@ -141,14 +137,14 @@ def prestashop2(session):
 		datosmysql="mysql_db: %s\nmysql_user: %s\nmysql_password: %s\n"%(str(namedb),str(userdb),str(passdb))
 		datoscms='site_name: "%s"\nadmin_user: %s\nadmin_password: %s\nname_user: %s\nsurname_user: %s'%(str(site_name),str(admin_name),str(admin_passwd),str(name_user),str(surname_user))
 
-		fichero = open ('/home/usuario/hosting-proyecto/Ansible/group_vars/all','w')
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
 		fichero.write(dominio)
 		fichero.write(datosmysql)
 		fichero.write(datoscms)
 		fichero.close()
 
 		# Instalamos prestashop con ansible
-		subprocess.call(["ansible-playbook", "/home/usuario/hosting-proyecto/Ansible/site_prestashop.yml"])
+		subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/site_prestashop.yml"])
 
 		return template('html/prestashop.tpl',user=user)
 
@@ -181,14 +177,14 @@ def mediawiki2(session):
 		datosmysql="mysql_db: %s\nmysql_user: %s\nmysql_password: %s\n"%(str(namedb),str(userdb),str(passdb))
 		datoscms='site_name: "%s"\nadmin_user: %s\nadmin_password: %s\nname_user: %s\nsurname_user: %s'%(str(site_name),str(admin_name),str(admin_passwd),str(name_user),str(surname_user))
 
-		fichero = open ('/home/usuario/hosting-proyecto/Ansible/group_vars/all','w')
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
 		fichero.write(dominio)
 		fichero.write(datosmysql)
 		fichero.write(datoscms)
 		fichero.close()
 
 		# Instalamos mediawiki con ansible
-		subprocess.call(["ansible-playbook", "/home/usuario/hosting-proyecto/Ansible/site_mediawiki.yml"])
+		subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/site_mediawiki.yml"])
 
 		return template('html/mediawiki.tpl',user=user)
 
@@ -220,4 +216,4 @@ def logs_php(session):
 def server_static(filepath):
     return static_file(filepath, root='html/style')
 
-run(host='0.0.0.0', port=8080)
+#run(host='0.0.0.0', port=8080)

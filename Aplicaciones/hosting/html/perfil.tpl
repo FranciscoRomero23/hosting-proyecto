@@ -50,7 +50,7 @@
     <td width="50" align="left"><b>Tipo:</b></td>
     <td width="100" align="left">{{server[1]}}</td>
     <td>
-    <a class="boton_servidor" href="http://{{server[0]}}.autohosting.com">Administrar</a>
+    <a class="boton_servidor" href="http://{{server[0]}}.autohosting.com/panel">Administrar</a>
     </td>
     <td>
     <a class="boton_servidor" href="/borrarserver/{{server[0]}}">Dar de baja</a>

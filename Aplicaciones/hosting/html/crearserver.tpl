@@ -44,8 +44,6 @@
 			<option value="estandar"/>Servidor Estándar</option>
 			<option value="avanzado"/>Servidor Avanzado</option>
 		</select><br/>
-                Contraseña Webmaster<br/>
-                <input name="passwd_webmaster" type="password" /><br/>
                 <input value="Contratar" type="submit" />
         </form>
 </article>

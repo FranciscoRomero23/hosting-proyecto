@@ -1,14 +1,8 @@
 ---
-- name: Clonamos el repositorio
-  command: git clone https://github.com/FranciscoRomero23/hosting-proyecto /home/usuario/hosting-proyecto
 - name: Creamos el virtualenv
-  command: virtualenv -p /usr/bin/python3 /home/usuario/bottle
-- name: Activamos el virtualenv
-  command: source /home/usuario/bottle/bin/activate
+  command: virtualenv -p /usr/bin/python3 /home/admin/bottle
 - name: Instalamos los requeriments
-  command: pip3 install -r /home/usuario/hosting-proyecto/Aplicaciones/panel/requeriments.txt
-- name: Desactivamos el virtualenv
-  command: deactivate
+  pip: requirements=/home/admin/hosting-proyecto/Aplicaciones/panel/requeriments.txt virtualenv=/home/admin/bottle
 - name: Crear directorio root
   file:
     path: /var/www/html/panel
@@ -17,13 +11,22 @@
     group: www-data
     mode: 0775
 - name: Copiamos los ficheros de la aplicacion
-  command: cp -r /home/usuario/hosting-proyecto/Aplicaciones/panel/* /var/www/html/panel/
+  synchronize:
+    src: /home/admin/hosting-proyecto/Aplicaciones/panel/
+    dest: /var/www/html/panel
+    recursive: True
+- name: Copiamos la web principal
+  template: >
+    src=web.tpl
+    dest=/var/www/html/panel/html/web.tpl
 - name: Copiamos el virtualhost
-  file: >
-    src=/home/usuario/hosting-proyecto/Aplicaciones/panel/panel.conf
+  template: >
+    src=virtualenv.conf
     dest=/etc/apache2/sites-available/panel.conf
-- name: Cambiamos permisos directorio root
+- name: Cambiamos usuarios directorio root
   command: chown -R www-data:www-data /var/www/html/panel/
+- name: Cambiamos permisos directorio root
+  command: chmod 755 -R /var/www/html/panel/
 - name: Deshabilitamos el virtualhost por defecto
   command: a2dissite 000-default.conf
 - name: Habilitamos el virtualhost nuevo
