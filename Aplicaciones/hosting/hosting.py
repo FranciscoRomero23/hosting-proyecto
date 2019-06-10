@@ -221,7 +221,7 @@ def crearserver2(session):
 		tipo = request.forms.get('servidor')
 
 		# Creamos el servidor con terraform
-		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(name))
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\ntags = { Name = "%s" }\n}\n'%(str(name))
 		fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
 		fichero.write(datosservidor)
 		fichero.close()
@@ -334,7 +334,7 @@ def borrarserver(session,nameserver):
 		fichero.close()
 
 		# Borramos el servidor con terraform
-		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\n}\n'%(str(nameserver))
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\ntags = { Name = "%s" }\n}\n'%(str(nameserver))
 		f = open("/var/www/html/hosting/terraform/main.tf",'r')
 		cambio = f.read()
 		cambio = cambio.replace(datosservidor,"")

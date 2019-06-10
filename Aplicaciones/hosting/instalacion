@@ -39,14 +39,19 @@
 
 8. Crear el usuario y la base de datos para la aplicacion web (esta todo en el fichero database_hosting)
 
-9. Copiar y activar el virtualhost:
+9. Cambiar propietarios a ficheros de ansible:
+
+	chown www-data:www-data /home/admin/hosting-proyecto/Ansible/group_vars/all
+	chown www-data:www-data /home/admin/hosting-proyecto/Ansible/ansible_hosts
+
+10. Copiar y activar el virtualhost:
 
 	cd ~/hosting-proyecto/Aplicaciones/hosting
 	cp hosting.conf /etc/apache2/sites-available/
 	a2dissite 000-default
 	a2ensite hosting
 
-10. Reiniciar apache2 y dnsmasq:
+11. Reiniciar apache2 y dnsmasq:
 
 	systemctl restart apache2
 	systemctl restart dnsmasq
