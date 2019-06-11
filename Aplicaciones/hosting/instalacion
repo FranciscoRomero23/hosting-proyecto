@@ -24,34 +24,44 @@
 
 	mkdir /home/terraform
 	cd /home/terraform
-	wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip -O
+	wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip
 	unzip terraform_0.12.0_linux_amd64.zip
 	rm terraform_0.12.0_linux_amd64.zip
 
-6. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
+6. Iniciar terraform:
+
+	/home/terraform/terraform init
+
+7. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
 
 	mkdir /var/www/html/hosting/terraform	
 	nano /var/www/html/hosting/terraform/main.tf
 
-7. Cambiar usuario/grupo del directorio root de la aplicacion web:
+8. Crear el usuario y la base de datos para la aplicacion web (esta todo en el fichero database_hosting)
+
+9. Mover fichero ansible.cfg a /etc/ansible:
+
+	cd ~/hosting-proyecto/Aplicaciones/hosting/
+	cp ansible.cfg /etc/ansible/cfg
+
+10. Mover el /etc/ansible/hosts a directorio root de la aplicacion web y crear enlace simbolico:
+
+	mv /etc/ansible/hosts /var/www/html/hosting/ansible_hosts
+        ln -s /var/www/html/hosting/ansible_hosts /etc/ansible/hosts
+
+11. Cambiar usuario/grupo del directorio root de la aplicacion web:
 
 	chown -R www-data:www-data /var/www/html/hosting
 
-8. Crear el usuario y la base de datos para la aplicacion web (esta todo en el fichero database_hosting)
 
-9. Cambiar propietarios a ficheros de ansible:
-
-	chown www-data:www-data /home/admin/hosting-proyecto/Ansible/group_vars/all
-	chown www-data:www-data /home/admin/hosting-proyecto/Ansible/ansible_hosts
-
-10. Copiar y activar el virtualhost:
+12. Copiar y activar el virtualhost:
 
 	cd ~/hosting-proyecto/Aplicaciones/hosting
 	cp hosting.conf /etc/apache2/sites-available/
 	a2dissite 000-default
 	a2ensite hosting
 
-11. Reiniciar apache2 y dnsmasq:
+13. Reiniciar apache2 y dnsmasq:
 
 	systemctl restart apache2
 	systemctl restart dnsmasq
