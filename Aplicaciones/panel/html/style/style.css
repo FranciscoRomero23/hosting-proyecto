@@ -190,6 +190,13 @@ article p {
    font: 30px Ampera;
 }
 
+.logs {
+    color: black;
+    font: 20px times;
+    letter-spacing: -1px;
+    text-align: left;
+}
+
 img {
 height: 350px;
 display:block;

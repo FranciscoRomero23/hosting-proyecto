@@ -1,4 +1,8 @@
 ---
+- name: Clonamos el repositorio
+  git: >
+    repo=https://github.com/FranciscoRomero23/hosting-proyecto
+    dest=/home/admin/hosting-proyecto
 - name: Creamos el virtualenv
   command: virtualenv -p /usr/bin/python3 /home/admin/bottle
 - name: Instalamos los requeriments
@@ -11,18 +15,27 @@
     group: www-data
     mode: 0775
 - name: Copiamos los ficheros de la aplicacion
-  synchronize:
-    src: /home/admin/hosting-proyecto/Aplicaciones/panel/
-    dest: /var/www/html/panel
-    recursive: True
+  command: cp -r /home/admin/hosting-proyecto/Aplicaciones/panel/ /var/www/html/
 - name: Copiamos la web principal
   template: >
     src=web.tpl
     dest=/var/www/html/panel/html/web.tpl
 - name: Copiamos el virtualhost
   template: >
-    src=virtualenv.conf
+    src=virtualhost.conf
     dest=/etc/apache2/sites-available/panel.conf
+- name: Movemos el log de acceso de apache
+  command: mv /var/log/apache2/access.log /var/www/html/panel/apache-access-log
+- name: Creamos enlace simbolico del log de accesso de apache
+  command: ln -s /var/www/html/panel/apache-access-log /var/log/apache2/access.log
+- name: Movemos el log de errores de apache
+  command: mv /var/log/apache2/error.log /var/www/html/panel/apache-error-log
+- name: Creamos enlace simbolico del log de errores de apache
+  command: ln -s /var/www/html/panel/apache-error-log /var/log/apache2/error.log
+- name: Movemos el log de errores de mysql
+  command: mv /var/log/mysql/error.log /var/www/html/panel/mysql-error-log
+- name: Creamos enlace simbolico del log de errores de msyql
+  command: ln -s /var/www/html/panel/mysql-error-log /var/log/mysql/error.log
 - name: Cambiamos usuarios directorio root
   command: chown -R www-data:www-data /var/www/html/panel/
 - name: Cambiamos permisos directorio root

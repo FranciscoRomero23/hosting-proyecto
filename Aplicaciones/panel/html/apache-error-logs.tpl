@@ -33,7 +33,12 @@
 </header>
 
 <article>
-<h1>Logs de Apache</h1>
+<h1>Logs de errores de Apache</h1><br>
+<div style="overflow:scroll;height:400px;width:auto;overflow-x:hidden;">
+% for i in logs:
+<p class="logs">{{i}}</p>
+% end
+</div>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>

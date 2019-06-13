@@ -5,7 +5,7 @@
 <head>
 <link href="/style/style.css" rel="stylesheet" />
 <link rel="icon" type="image/png" href="/style/images/favicon.png" />
-<title>Logs de Mysql</title>
+<title>Logs de Apache</title>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 </header>
 
 <article>
-<h1>Logs de errores de Mysql</h1><br>
+<h1>Logs de acceso de Apache</h1><br>
 <div style="overflow:scroll;height:400px;width:auto;overflow-x:hidden;">
 % for i in logs:
 <p class="logs">{{i}}</p>

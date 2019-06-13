@@ -37,9 +37,9 @@
 <p>Desde esta pagina podrás consultar los archivos de log de los servicios de tu servidor.</p> 
 <p>Puedes ver los logs de los siguientes servicios:</p><br/><br/>
       <nav>
-        <a class="boton_opcion" href="/panel/apache-logs">Logs de Apache</a>
-        <a class="boton_opcion" href="/panel/mysql-logs">Logs de MySql</a>
-        <a class="boton_opcion" href="/panel/php-logs">Logs de Php</a>
+        <a class="boton_opcion" href="/panel/apache-access-logs">Logs de Apache</a><br>
+        <a class="boton_opcion" href="/panel/apache-error-logs">Logs de MySql</a><br>
+        <a class="boton_opcion" href="/panel/mysql-error-logs">Logs de Php</a>
       </nav>
 </article>
 
