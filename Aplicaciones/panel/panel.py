@@ -179,7 +179,7 @@ def mediawiki2(session):
 	subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/site_mediawiki.yml"])
 	redirect ("/panel/mediawiki")
 
-@route('/panel/apache-access-logs')
+@route('/panel/apache-access-log')
 def logs_apache(session):
 	user = session.get('name')
 	if user=='None':
@@ -187,9 +187,9 @@ def logs_apache(session):
 	else:
 		archivolog=open('/var/www/html/panel/apache-access-log','r')
 		logs=archivolog.readlines()
-		return template('/var/www/html/panel/html/apache-access-logs.tpl',user=user,logs=logs)
+		return template('/var/www/html/panel/html/apache-access-log.tpl',user=user,logs=logs)
 
-@route('/panel/apache-error-logs')
+@route('/panel/apache-error-log')
 def logs_apache(session):
 	user = session.get('name')
 	if user=='None':
@@ -197,17 +197,17 @@ def logs_apache(session):
 	else:
 		archivolog=open('/var/www/html/panel/apache-error-log','r')
 		logs=archivolog.readlines()
-		return template('/var/www/html/panel/html/apache-error-logs.tpl',user=user,logs=logs)
+		return template('/var/www/html/panel/html/apache-error-log.tpl',user=user,logs=logs)
 
-@route('/panel/mysql-error-logs')
+@route('/panel/mysql-error-log')
 def logs_mysql(session):
 	user = session.get('name')
 	if user=='None':
 		redirect ("/panel/login")
 	else:
-		archivolog=open('/var/www/html/panel/mysql-error-logs','r')
+		archivolog=open('/var/www/html/panel/mysql-error-log','r')
 		logs=archivolog.readlines()
-		return template('/var/www/html/panel/html/mysql-error-logs.tpl',user=user,logs=logs)
+		return template('/var/www/html/panel/html/mysql-error-log.tpl',user=user,logs=logs)
 
 
 @route('/style/<filepath:path>')
