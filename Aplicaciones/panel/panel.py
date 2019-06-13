@@ -54,7 +54,16 @@ def login_user2(session):
 	username = request.forms.get('username')
 	password = request.forms.get('password')
 
-	if username=='webmaster' and password=='webmaster':
+	# Ciframos la contraseña obtenida desde el formulario
+	hashpassword=hashlib.md5(password.encode('utf-8')).hexdigest()
+
+	# Leemos la contraseña desde el fichero passwordfile
+	fichero = open ('/var/www/html/panel/passwordfile','r')
+	passwordfile = fichero.read()
+	fichero.close()
+	passwordfile = passwordfile[:-1]
+
+	if username=='webmaster' and hashpassword==passwordfile:
 		session['name'] = username
 		user = session.get('name')
 		redirect ("/panel")

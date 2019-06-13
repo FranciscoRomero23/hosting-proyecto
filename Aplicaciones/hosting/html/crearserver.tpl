@@ -44,6 +44,8 @@
 			<option value="estandar"/>Servidor Estándar</option>
 			<option value="avanzado"/>Servidor Avanzado</option>
 		</select><br/>
+		Contraseña panel<br>
+		<input name="passwordpanel" type="password" /><br/>
                 <input value="Contratar" type="submit" />
         </form>
 </article>

@@ -215,6 +215,7 @@ def crearserver2(session):
 	user = session.get('name')
 	name = request.forms.get('name')
 	tipo = request.forms.get('servidor')
+	passwordpanel = request.forms.get('passwordpanel')
 
 	# Creamos el servidor con terraform
 	datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\ntags = { Name = "%s" }\n}\n'%(str(name),str(name))
@@ -231,12 +232,14 @@ def crearserver2(session):
 	ip=subprocess.check_output(cmd,shell=True)
 	publicip=ip.decode('utf-8')[:-1]
 
-# - Pendiente de probar -
-#	# Modificamos el fichero de variables para la instalación del panel
-#	nombreserver="---\nserver: %s\n"%(str(name))
-#	fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
-#	fichero.write(nombreserver)
-#	fichero.close()
+	# Ciframos la contraseña para el panel
+	hashpasswordpanel=hashlib.md5(passwordpanel.encode('utf-8')).hexdigest()
+
+	# Modificamos el fichero de variables para la instalación del panel
+	nombreserver="---\nserver: %s\npassword: %s\n"%(str(name),hashpasswordpanel)
+	fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
+	fichero.write(nombreserver)
+	fichero.close()
 
 	# Instalamos el panel en el servidor con ansible
 
