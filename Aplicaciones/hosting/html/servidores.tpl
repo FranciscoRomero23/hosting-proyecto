@@ -45,12 +45,9 @@
 <article>
   <h1>Servidores en Auto Hosting</h1>
   <p>En Auto Hosting disponemos de los siguientes servidores:</p>
-  <h2>Servidor Básico</h2>
-  <p>El servidor básico es el que menor categoría tiene entre los servidores que tenemos en Auto Hosting. Dispone de 1 GB de memoria RAM, 1 CPU y 20 GB de disco duro.</p>
-  <h2>Servidor Estándar</h2>
-  <p>El servidor estándar es el servidor de gama media entre  los servidores que tenemos en Auto Hosting. Dispone de 2 GB de memoria RAM, 1 CPU y 30 GB de disco duro.</p>
-  <h2>Servidor Avanzado</h2>
-  <p>El servidor avanzado es el mejor servidor que de momento tenemos en Auto Hosting. Dispone de 2 GB de memoria RAM, 2 CPUs y 40 GB de disco duro.</p>
+  <p class="servidores"><b>Servidor Básico</b>: es el que menor categoría tiene entre los servidores que tenemos en autohosting, dispone de 1 GB de memoria RAM, 1 CPU y 20 GB de disco duro.</p>
+  <p class="servidores"><b>Servidor Estándar</b>: es el servidor de gama media entre los servidores que tenemos en autohosting, dispone de 2 GB de memoria RAM, 1 CPU y 30 GB de disco duro.</p>
+  <p class="servidores"><b>Servidor Avanzado</b>: es el mejor servidor que de momento tenemos en autohosting, dispone de 2 GB de memoria RAM, 2 CPUs y 40 GB de disco duro.</p>
 </article>
 
 <footer>Copyright &copy; Francisco José Romero Morillo, 2019</footer>
@@ -59,3 +56,4 @@
 
 </body>
 </html>
+

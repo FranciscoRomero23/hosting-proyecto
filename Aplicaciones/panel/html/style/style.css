@@ -30,7 +30,7 @@ header {
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 footer {
@@ -47,7 +47,7 @@ footer {
     border-radius: 2px;
     margin-left: 10px;
     margin-right: 10px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 a:link   
@@ -107,6 +107,7 @@ li a{
 article {
     margin-left: 200px;
     margin-right: 200px;
+    height:380px;
     border-left: 0px solid black;
     padding: 3em;
     overflow: hidden;
@@ -117,7 +118,7 @@ article {
     margin-right: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 article h1 {

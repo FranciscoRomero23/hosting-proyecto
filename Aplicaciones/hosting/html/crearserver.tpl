@@ -35,17 +35,15 @@
 
 <article>
   <h1>Contratar un nuevo servidor</h1>
+  <p>En esta página podras contratar un nuevo servidor:</p>
         <form action="/crearserver" method="post">
-                Nombre del servidor<br/>
-                <input name="name" type="text" /><br/>
-                Tipo de servidor<br/>
-		<select name="servidor">
+                <input name="name" type="text" placeholder="Nombre del servidor" /><br/>
+		<select name="servidor" >
 			<option value="basico"/>Servidor Básico</option>
 			<option value="estandar"/>Servidor Estándar</option>
 			<option value="avanzado"/>Servidor Avanzado</option>
 		</select><br/>
-		Contraseña panel<br>
-		<input name="passwordpanel" type="password" /><br/>
+		<input name="passwordpanel" type="password" placeholder="Contraseña panel" /><br/>
                 <input value="Contratar" type="submit" />
         </form>
 </article>

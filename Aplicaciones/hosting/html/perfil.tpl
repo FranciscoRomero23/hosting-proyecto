@@ -35,12 +35,12 @@
 
 <article>
   <h1>Perfil de {{user}}</h1>
-  <p>Bienvenido a tu perfil, {{user}}.</p>
-  <p>Desde esta página podrás administrar tus servidores en Auto Hosting.</p>
+  <p>Bienvenido a tu perfil, {{user}}. Desde esta página podrás administrar tus servidores en Auto Hosting.</p>
 % if servercount==0:
   <p>Aún no tienes servidores para administrar, puedes contratar nuevos servidores en la pestaña <i>Contratar</i>.</p>
 % else:
   <p>Tus servidores para administrar son:</p>
+<div style="overflow:scroll;height:200px;width:auto;overflow-x:hidden;">
 % for server in listaservidores:
 
 <table border="2" bordercolor="black">
@@ -59,6 +59,7 @@
 </table>
 <br/>
 % end
+</div>
 % end
 </article>
 
@@ -68,3 +69,4 @@
 
 </body>
 </html>
+

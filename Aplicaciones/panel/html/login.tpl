@@ -19,10 +19,8 @@
 <article>
 <h1>Inicio de sesión</h1>
 	<form action="/panel/login" method="post">
-		Usuario<br/>
-		<input name="username" type="text" /><br/>
-		Contraseña<br/>
-		<input name="password" type="password" /><br/>
+		<input name="username" type="text" placeholder="Nombre de usuario"/><br/>
+		<input name="password" type="password" placeholder="Contraseña" /><br/>
 		<input value="Login" type="submit" />
         </form>
 </article>
@@ -33,3 +31,4 @@
 
 </body>
 </html>
+

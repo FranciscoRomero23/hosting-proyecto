@@ -20,7 +20,7 @@ header {
     color: white;
     clear: left;
     text-align: center;
-    text-shadow: 5px 5px 2px #5482C4;
+    text-shadow: 5px 5px 2px #7a9ed1;
     height:180px;
     color: black;
     font: 40px Ampera;
@@ -30,7 +30,7 @@ header {
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 footer {
@@ -47,7 +47,7 @@ footer {
     border-radius: 2px;
     margin-left: 10px;
     margin-right: 10px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 a:link   
@@ -107,6 +107,7 @@ li a{
 article {
     margin-left: 200px;
     margin-right: 200px;
+    height:380px;
     border-left: 0px solid black;
     padding: 3em;
     overflow: hidden;
@@ -117,7 +118,7 @@ article {
     margin-right: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    background: #2E5EA3;
+    background: #3874c7;
 }
 
 article h1 {
@@ -136,11 +137,21 @@ article h2 {
     text-align: justify;
 }
 
+
 article p {
     color: black;
     font: 25px times;
     letter-spacing: -1px;
     text-align: justify;
+}
+
+.servidores {
+    color: black;
+    font: 25px times;
+    letter-spacing: -1px;
+    text-align: justify;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 .errortext {
@@ -228,3 +239,4 @@ td, th {
 td {
    border: 0;
 }
+

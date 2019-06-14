@@ -34,19 +34,14 @@
 
 <article>
   <h1>Registro</h1>
+  <p>Aquí podras crear una nueva cuenta de usuario para gestionar tus servidores. Inserta los datos siguientes:</p>
         <form action="/registro" method="post">
-                Nombre<br/>
-                <input name="name" type="text" /><br/>
-                Apellidos<br/>
-                <input name="surname" type="text" /><br/>
-                DNI<br/>
-                <input name="dni" type="text" /><br/>
-                Correo electrónico<br/>
-                <input name="email" type="text" /><br/>
-                Usuario<br/>
-                <input name="username" type="text" /><br/>
-                Clave<br/>
-                <input name="password" type="password" /><br/>
+                <input name="name" type="text" placeholder="Nombre" />
+                <input name="surname" type="text" placeholder="Apellidos" /><br/>
+                <input name="dni" type="text" placeholder="DNI" />
+                <input name="email" type="text" placeholder="Correo Electrónico" /><br>
+                <input name="username" type="text" placeholder="Nombre de usuario" />
+                <input name="password" type="password" placeholder="Contraseña" /><br/>
                 <input value="Registrarse" type="submit" />
         </form>
 </article>
@@ -57,3 +52,4 @@
 
 </body>
 </html>
+
