@@ -4,6 +4,7 @@ import bottle
 import bottle_session
 from beaker.middleware import SessionMiddleware
 import subprocess
+import hashlib
 
 session_opts = {
     'session.type': 'memory',

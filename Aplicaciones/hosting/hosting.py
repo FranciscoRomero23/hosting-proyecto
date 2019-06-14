@@ -35,6 +35,7 @@ def servidores(session):
 def registro1():
 	return template('/var/www/html/hosting/html/registro.tpl')
 
+
 @route('/registro',method='POST')
 def registro2(session):
 	name = request.forms.get('name')
@@ -52,18 +53,39 @@ def registro2(session):
 	  database="hosting"
 	)
 
-	# Ciframos la contraseña que vamos a registrar
-	hashpassword=hashlib.md5(password.encode('utf-8')).hexdigest()
-
-	# Insertamos un nuevo usuario en la base de datos
+	# Comprobamos que no existe un usuario con ese dni
 	mycursor = mydb.cursor()
-	sql = "INSERT INTO usuarios VALUES (%s, %s, %s, %s, %s, %s)"
-	val = (name, surname, dni, email, username, hashpassword)
-	mycursor.execute(sql, val)
-	mydb.commit()
+	sql = "select count(*) from usuarios where dni = %s"
+	user = (dni, )
+	mycursor.execute(sql, user)
+	records = mycursor.fetchall()
+	for row in records:
+		usuario=row[0]
+	mycursor.close()
 
-	user = session.get('name')
-	redirect ("/")
+	if usuario > 0:
+		redirect ("/errorusuario")
+	else:
+		# Conexion con la base de datos
+		mydb = mysql.connector.connect(
+		  host="localhost",
+		  user="hosting",
+		  passwd="hosting",
+		  database="hosting"
+		)
+
+		# Ciframos la contraseña que vamos a registrar
+		hashpassword=hashlib.md5(password.encode('utf-8')).hexdigest()
+
+		# Insertamos un nuevo usuario en la base de datos
+		mycursor = mydb.cursor()
+		sql = "INSERT INTO usuarios VALUES (%s, %s, %s, %s, %s, %s)"
+		val = (name, surname, dni, email, username, hashpassword)
+		mycursor.execute(sql, val)
+		mydb.commit()
+
+		user = session.get('name')
+		redirect ("/")
 
 @route('/login',method='GET')
 def login_user1(session):
@@ -217,56 +239,6 @@ def crearserver2(session):
 	tipo = request.forms.get('servidor')
 	passwordpanel = request.forms.get('passwordpanel')
 
-	# Creamos el servidor con terraform
-	datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\ntags = { Name = "%s" }\n}\n'%(str(name),str(name))
-	fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
-	fichero.write(datosservidor)
-	fichero.close()
-	os.chdir("/var/www/html/hosting/terraform")
-	subprocess.run(["/home/terraform/terraform", "plan"])
-	subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
-
-	# Obtenemos la ip publica del servidor
-	os.chdir("/var/www/html/hosting/terraform")
-	cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
-	ip=subprocess.check_output(cmd,shell=True)
-	publicip=ip.decode('utf-8')[:-1]
-
-	# Ciframos la contraseña para el panel
-	hashpasswordpanel=hashlib.md5(passwordpanel.encode('utf-8')).hexdigest()
-
-	# Modificamos el fichero de variables para la instalación del panel
-	nombreserver="---\nserver: %s\npassword: %s\n"%(str(name),hashpasswordpanel)
-	fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
-	fichero.write(nombreserver)
-	fichero.close()
-
-	# Instalamos el panel en el servidor con ansible
-
-	subprocess.call(["ansible-playbook", "/home/admin/hosting-proyecto/Ansible/panel.yml"])
-
-	# Borramos el servidor del ansible_hosts
-	hostserver='[%s]\n%s ansible_ssh_private_key_file=/home/admin/amazon\n'%(str(name),publicip)
-	fichero = open ('/etc/ansible/hosts','r')
-	cambio = fichero.read()
-	cambio = cambio.replace(hostserver,"")
-	fichero.close()
-	fichero = open ('/etc/ansible/hosts','w')
-	fichero.write(cambio)
-	fichero.close()
-
-	# Añadimos el servidor al ansible_hosts
-	hostserver='[%s]\n%s ansible_ssh_private_key_file=/home/admin/amazon\n'%(str(name),publicip)
-	fichero = open ('/etc/ansible/hosts','a')
-	fichero.write(hostserver)
-	fichero.close()
-
-	# Añadimos el servidor al servidor dns
-	newserver='%s %s.autohosting.com\n'%(publicip,str(name))
-	fichero = open ('/etc/hosts','a')
-	fichero.write(newserver)
-	fichero.close()
-
 	# Conexion con la base de datos
 	mydb = mysql.connector.connect(
 	  host="localhost",
@@ -275,46 +247,117 @@ def crearserver2(session):
 	  database="hosting"
 	)
 
-	# Obtenemos el dni del dueño del servidor
+	# Comprobamos que no existe un servidor con ese nombre
 	mycursor = mydb.cursor()
-	sql = "select dni from usuarios where username = %s"
-	user = (user, )
-	mycursor.execute(sql, user)
+	sql = "select count(*) from servidores where name = %s"
+	server = (name, )
+	mycursor.execute(sql, server)
 	records = mycursor.fetchall()
 	for row in records:
-		dni=row[0]
+		servername=row[0]
 	mycursor.close()
 
-	# Insertamos un nuevo servidor en la base de datos
-	mycursor = mydb.cursor()
-	sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s)"
-	val = (name, tipo, dni, publicip)
-	mycursor.execute(sql, val)
-	mydb.commit()
+	if servername > 0:
+		redirect ("/errorserver")
+	else:
 
-	# Obtenemos la cantidad de servidores que tiene el usuario
-	mycursor = mydb.cursor()
-	sql = "select count(*) from servidores where user = %s"
-	user = (dni, )
-	mycursor.execute(sql, user)
-	records = mycursor.fetchall()
-	for row in records:
-		servercount=row[0]
-	mycursor.close()
+		# Creamos el servidor con terraform
+		datosservidor='resource "aws_instance" "%s" {\ninstance_type = "t2.micro"\nami = "ami-023143c216b0108ea"\nkey_name = "amazon"\nvpc_security_group_ids = ["sg-45cbb829"]\ntags = { Name = "%s" }\n}\n'%(str(name),str(name))
+		fichero = open ('/var/www/html/hosting/terraform/main.tf','a')
+		fichero.write(datosservidor)
+		fichero.close()
+		os.chdir("/var/www/html/hosting/terraform")
+		subprocess.run(["/home/terraform/terraform", "plan"])
+		subprocess.run(["/home/terraform/terraform", "apply", "-auto-approve"])
 
-	listaservidores = []
-	# Obtenemos los datos de los servidores del usuario
-	mycursor = mydb.cursor()
-	sql = "select name,type from servidores where user = %s"
-	user = (dni, )
-	mycursor.execute(sql, user)
-	records = mycursor.fetchall()
-	for row in records:
-		listaservidores.append([row[0],row[1]])
-	mycursor.close()
+		# Obtenemos la ip publica del servidor
+		os.chdir("/var/www/html/hosting/terraform")
+		cmd = '/home/terraform/terraform state show aws_instance.%s | grep public_ip | sed 1d | sed "s/ //g" | cut -d"=" -f2 | sed "s/^.//g" | sed "s/.$//g"'%(str(name))
+		ip=subprocess.check_output(cmd,shell=True)
+		publicip=ip.decode('utf-8')[:-1]
 
-	user = session.get('name')
-	redirect ("/perfil")
+		# Ciframos la contraseña para el panel
+		hashpasswordpanel=hashlib.md5(passwordpanel.encode('utf-8')).hexdigest()
+
+		# Modificamos el fichero de variables para la instalación del panel
+		nombreserver="---\nserver: %s\npassword: %s\n"%(str(name),hashpasswordpanel)
+		fichero = open ('/home/admin/hosting-proyecto/Ansible/group_vars/all','w')
+		fichero.write(nombreserver)
+		fichero.close()
+
+		# Añadimos el servidor al ansible_hosts
+		hostserver='[%s]\n%s ansible_ssh_private_key_file=/home/admin/amazon\n'%(str(name),publicip)
+		fichero = open ('/etc/ansible/hosts','a')
+		fichero.write(hostserver)
+		fichero.close()
+
+		# Instalamos el panel en el servidor con ansible
+		subprocess.run(["/usr/bin/ansible-playbook", "/home/admin/hosting-proyecto/Ansible/panel.yml"])
+
+		# Borramos el servidor del ansible_hosts
+		hostserver='[%s]\n%s ansible_ssh_private_key_file=/home/admin/amazon\n'%(str(name),publicip)
+		fichero = open ('/etc/ansible/hosts','r')
+		cambio = fichero.read()
+		cambio = cambio.replace(hostserver,"")
+		fichero.close()
+		fichero = open ('/etc/ansible/hosts','w')
+		fichero.write(cambio)
+		fichero.close()
+
+		# Añadimos el servidor al servidor dns
+		newserver='%s %s.autohosting.com\n'%(publicip,str(name))
+		fichero = open ('/etc/hosts','a')
+		fichero.write(newserver)
+		fichero.close()
+
+		# Conexion con la base de datos
+		mydb = mysql.connector.connect(
+		  host="localhost",
+		  user="hosting",
+		  passwd="hosting",
+		  database="hosting"
+		)
+
+		# Obtenemos el dni del dueño del servidor
+		mycursor = mydb.cursor()
+		sql = "select dni from usuarios where username = %s"
+		user = (user, )
+		mycursor.execute(sql, user)
+		records = mycursor.fetchall()
+		for row in records:
+			dni=row[0]
+		mycursor.close()
+
+		# Insertamos un nuevo servidor en la base de datos
+		mycursor = mydb.cursor()
+		sql = "INSERT INTO servidores VALUES (%s, %s, %s, %s, %s)"
+		val = (name, tipo, dni, publicip, hashpasswordpanel,)
+		mycursor.execute(sql, val)
+		mydb.commit()
+
+		# Obtenemos la cantidad de servidores que tiene el usuario
+		mycursor = mydb.cursor()
+		sql = "select count(*) from servidores where user = %s"
+		user = (dni, )
+		mycursor.execute(sql, user)
+		records = mycursor.fetchall()
+		for row in records:
+			servercount=row[0]
+		mycursor.close()
+
+		listaservidores = []
+		# Obtenemos los datos de los servidores del usuario
+		mycursor = mydb.cursor()
+		sql = "select name,type from servidores where user = %s"
+		user = (dni, )
+		mycursor.execute(sql, user)
+		records = mycursor.fetchall()
+		for row in records:
+			listaservidores.append([row[0],row[1]])
+		mycursor.close()
+
+		user = session.get('name')
+		redirect ("/perfil")
 
 @route('/borrarserver/<nameserver>')
 def borrarserver(session,nameserver):
@@ -401,6 +444,14 @@ def borrarserver(session,nameserver):
 
 		user = session.get('name')
 		redirect ("/perfil")
+
+@route('/errorusuario')
+def errorpage1():
+	return template('/var/www/html/hosting/html/errorusuario.tpl')
+
+@route('/errorserver')
+def errorpage2():
+	return template('/var/www/html/hosting/html/errorserver.tpl')
 
 @route('/style/<filepath:path>')
 def server_static(filepath):

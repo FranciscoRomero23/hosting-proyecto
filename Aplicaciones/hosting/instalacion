@@ -1,4 +1,8 @@
-# Instrucciones para instalar la aplicacion del hosting
+# Instrucciones para instalar la aplicación del hosting
+
+0. Clonar este repositorio:
+
+	git clone https://github.com/FranciscoRomero23/hosting-proyecto
 
 1. Instalar apache2, libapache2-mod-wsgi-py3, python-virtualenv, redis-server, git, mysql-server, mysql-client, dnsmasq y unzip:
 
@@ -28,14 +32,15 @@
 	unzip terraform_0.12.0_linux_amd64.zip
 	rm terraform_0.12.0_linux_amd64.zip
 
-6. Iniciar terraform:
-
-	/home/terraform/terraform init
-
-7. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
+6. Crear directorio terraform dentro del directorio root de la aplicacion web y dentro el fichero main.tf con las claves de amazon:
 
 	mkdir /var/www/html/hosting/terraform	
 	nano /var/www/html/hosting/terraform/main.tf
+
+7. Iniciar terraform:
+
+	cd /var/www/html/hosting/terraform
+	/home/terraform/terraform init
 
 8. Crear el usuario y la base de datos para la aplicacion web (esta todo en el fichero database_hosting)
 

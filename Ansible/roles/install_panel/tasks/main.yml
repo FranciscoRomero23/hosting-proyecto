@@ -26,7 +26,7 @@
     dest=/etc/apache2/sites-available/panel.conf
 - name: Guardamos la contraseña del panel
   template: >
-    src: passwordpanel
+    src=passwordpanel
     dest=/var/www/html/panel/passwordfile
 - name: Movemos el log de acceso de apache
   command: mv /var/log/apache2/access.log /var/www/html/panel/apache-access-log
