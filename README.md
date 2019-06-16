@@ -1,4 +1,10 @@
-# Hosting Automatizado con Ansible y Terraform
+# hosting-proyecto
 
-## Descripción del proyecto
-Este proyecto tiene como objetivo crear un hosting que funcione de manera automática, en el cual la creación de los servidores donde se alojaran las páginas se hará mediante terraform y la creación de las páginas web se hará mediante ansible.
+![Logo Autohosting](https://github.com/FranciscoRomero23/hosting-proyecto/blob/master/Documentacion/Imagenes/Autohosting_logo.png)
+
+AutoHosting es un pequeño hosting automatizado, el cual funciona mediante el uso de Ansible y Teraform.
+Las versiones usadas son: Ansible 2.2.1.0 y  Terraform 0.12.0.
+
+[Memoria](https://github.com/FranciscoRomero23/hosting-proyecto/blob/master/Documentacion/Memoria.pdf) [Presentacion]()
+
+![Logos Ansible y Terraform](https://github.com/FranciscoRomero23/hosting-proyecto/blob/master/Documentacion/Imagenes/Ansible_Terraform_logos.png)
